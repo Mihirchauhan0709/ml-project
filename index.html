@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+    <title>Asteroid Collision Detection</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+    (function () {
+        // Initialize EmailJS with your public key
+        emailjs.init({
+            publicKey: "GhFtq6Okk97dn7Uf5",
+        });
+    })();
+
+    function SendMail() {
+        var params = {
+            from_name: document.getElementById("name").value,
+            from_email: document.getElementById("email").value,
+            message: document.getElementById("message").value
+        };
+
+        emailjs.send("service_692e32d", "template_n3h2m8o", params)
+        .then(function (res) {
+            alert("Message sent successfully! Status: " + res.status);
+            document.getElementById("contact-form").reset(); // Clear the form after successful submission
+        })
+        .catch(function (err) {
+            alert("Failed to send message. Please try again.");
+            console.error("EmailJS Error: ", err);
+        });
+    }
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll('a.scrolly').forEach(anchor => {
+				anchor.addEventListener("click", function (e) {
+					e.preventDefault();
+					const targetId = this.getAttribute("href").substring(1);
+					const targetElement = document.getElementById(targetId);
+	
+					if (targetElement) {
+						window.scrollTo({
+							top: targetElement.offsetTop - 10, // Adjust if needed
+							behavior: "smooth"
+						});
+					}
+				});
+			});
+		});
+	</script>
+
+
+
+
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper" class="fade-in">
+      <!-- Intro -->
+      <div id="intro">
+        <h1>Asteroid Collision Prediciton</h1>
+
+        <ul class="actions">
+          <li>
+            <a
+              href="#header"
+              class="button icon solid solo fa-arrow-down scrolly"
+              >Continue</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Header -->
+	  <header id="header">
+		<a href="#main" class="logo scrolly">Introduction</a>
+	</header>
+	
+
+      <!-- Nav -->
+	  <nav id="nav">
+		<ul class="links">
+			<li class="active"><a href="index.html">Home</a></li>
+			<li><a href="#main">Introduction</a></li>
+			<li><a href="dataprep_eda.html">Data Preparation & EDA</a></li>
+			<li class="dropdown">
+				<a href="#models" class="dropbtn">Model Implementation</a>
+				<ul class="dropdown-content">
+					<li><a href="#pca">PCA</a></li>
+					<li><a href="#clustering">Clustering</a></li>
+					<li><a href="#arm">Association Rule Mining</a></li>
+					<li><a href="#dt">Decision Trees</a></li>
+					<li><a href="#nb">Naïve Bayes</a></li>
+					<li><a href="#svm">Support Vector Machines</a></li>
+					<li><a href="#regression">Regression</a></li>
+				</ul>
+			</li>
+			<li><a href="#conclusion">Conclusion</a></li>
+			<li><a href="https://mihirchauhan0709.github.io/chauhan-mihir/" target=”_blank” >About Me</a></li>
+		</ul>
+	
+		<ul class="icons">
+			<!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
+			<li><a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+			<!-- <li><a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
+			<li><a href="https://github.com/Mihirchauhan0709" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+		</ul>
+	</nav>
+	
+	
+
+      <!-- Main -->
+      <div id="main">
+        <!-- Featured Post -->
+        <article class="post featured">
+          <header class="major">
+            <h2><a href="#">Overview of this project</a></h2>
+            <p>
+              Asteroids, commonly known as minor planets, are remnants from the
+              early formation of our solar system. They range in size from tiny
+              pebbles to hundreds of kilometers in diameter. Some asteroids
+              follow orbits that bring them close to Earth, and these Near-Earth
+              Objects (NEOs) pose potential collision risks.
+            </p>
+            <p>
+              The possibility of an asteroid impact has long been a concern for
+              scientists, policymakers, and the general public. Throughout
+              history, large asteroid collisions have been linked to significant
+              environmental changes and mass extinctions. Understanding their
+              behavior and predicting their trajectories is critical for
+              planetary defense.
+            </p>
+            <p>
+              Current asteroid tracking methods use telescopes and radar
+              technology to monitor their positions and estimate their future
+              locations. However, due to the vast number of asteroids and the
+              complexities of gravitational influences, traditional tracking
+              methods face limitations. This is where artificial intelligence
+              and machine learning come into play, offering enhanced precision
+              and predictive modeling capabilities.
+            </p>
+            <p>
+              Despite advancements, challenges remain in identifying and
+              categorizing asteroids efficiently. Many NEOs are discovered only
+              after they have passed Earth. Developing advanced analytical tools
+              that can process astronomical data quickly and accurately will be
+              crucial in mitigating potential threats.
+            </p>
+            <p>
+              Ongoing research focuses on improving asteroid classification,
+              refining impact probability calculations, and designing deflection
+              strategies. Future missions, such as NASA’s DART (Double Asteroid
+              Redirection Test), aim to test technologies that could alter an
+              asteroid’s trajectory, providing insights into planetary defense
+              techniques.
+            </p>
+            <!-- <p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br />
+									facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br />
+									amet nullam sed etiam veroeros.</p> -->
+          </header>
+          <a href="#" class="image main"
+            ><img src="images/asteroid.webp" alt=""
+          /></a>
+          <!-- Update the button to link to the research questions -->
+          <ul class="actions special">
+            <li>
+              <a href="#research-questions" class="button large"
+                >Research Questions</a
+              >
+            </li>
+          </ul>
+
+          <!-- Add Research Questions Section -->
+          <section id="research-questions">
+            <ul>
+              <li>What factors influence asteroid collision probability?</li>
+              <li>
+                How can improved detection techniques enhance early warning
+                systems?
+              </li>
+              <li>
+                What role does machine learning play in asteroid classification?
+              </li>
+              <li>How accurate are current impact probability models?</li>
+              <li>
+                What preventive measures can be taken to avoid asteroid
+                collisions?
+              </li>
+              <li>How does space weather affect asteroid trajectories?</li>
+              <li>
+                What challenges exist in detecting small but potentially
+                dangerous asteroids?
+              </li>
+              <li>
+                How do asteroid compositions impact their potential damage?
+              </li>
+              <li>What lessons can be learned from past asteroid events?</li>
+              <li>
+                How can global collaboration improve asteroid monitoring
+                efforts?
+              </li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- Posts
+							<section class="posts">
+								<article>
+									<header>
+										<span class="date">April 24, 2017</span>
+										<h2><a href="#">Sed magna<br />
+										ipsum faucibus</a></h2>
+									</header>
+									<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+									<ul class="actions special">
+										<li><a href="#" class="button">Full Story</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										<span class="date">April 22, 2017</span>
+										<h2><a href="#">Primis eget<br />
+										imperdiet lorem</a></h2>
+									</header>
+									<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+									<ul class="actions special">
+										<li><a href="#" class="button">Full Story</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										<span class="date">April 18, 2017</span>
+										<h2><a href="#">Ante mattis<br />
+										interdum dolor</a></h2>
+									</header>
+									<a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+									<ul class="actions special">
+										<li><a href="#" class="button">Full Story</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										<span class="date">April 14, 2017</span>
+										<h2><a href="#">Tempus sed<br />
+										nulla imperdiet</a></h2>
+									</header>
+									<a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+									<ul class="actions special">
+										<li><a href="#" class="button">Full Story</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										<span class="date">April 11, 2017</span>
+										<h2><a href="#">Odio magna<br />
+										sed consectetur</a></h2>
+									</header>
+									<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+									<ul class="actions special">
+										<li><a href="#" class="button">Full Story</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										<span class="date">April 7, 2017</span>
+										<h2><a href="#">Augue lorem<br />
+										primis vestibulum</a></h2>
+									</header>
+									<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+									<ul class="actions special">
+										<li><a href="#" class="button">Full Story</a></li>
+									</ul>
+								</article>
+							</section> -->
+
+        <!-- Footer -->
+      </div>
+
+      <!-- Footer -->
+		<footer id="footer">
+			<section id="contact">
+				<h2>Contact Me</h2>
+				<p>If you have any questions or inquiries, feel free to send me a message.</p>
+		
+				<form id="contact-form" onsubmit="SendMail(); return false;">
+					<div class="fields">
+						<div class="field">
+							<label for="name">Name</label>
+							<input type="text" id="name" name="name" placeholder="Your Name" required />
+						</div>
+						<div class="field">
+							<label for="email">Email</label>
+							<input type="email" id="email" name="email" placeholder="Your Email" required />
+						</div>
+						<div class="field">
+							<label for="message">Message</label>
+							<textarea id="message" name="message" placeholder="Your Message" rows="3" required></textarea>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><button type="submit" class="button">Send Message</button></li>
+					</ul>
+				</form>
+			</section>
+		
+        <section class="split contact">
+          <section class="alt">
+            <h3>Address</h3>
+            <p>
+              1475 Folsom St.<br />
+              Boulder, CO 80302
+            </p>
+          </section>
+          <section>
+            <h3>Phone</h3>
+            <p><a href="#">(720) 813-5491)</a></p>
+          </section>
+          <section>
+            <h3>Email</h3>
+            <p><a href="#">mihirchauhan951@gmail.com</a></p>
+          </section>
+          <section>
+            <h3>Social</h3>
+            <ul class="icons alt">
+              <li>
+                <a href="https://x.com/mihir_0702" class="icon brands alt fa-twitter"
+                  ><span class="label">Twitter</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.facebook.com/mihir.chauhan.503" class="icon brands alt fa-facebook-f"
+                  ><span class="label">Facebook</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands alt fa-instagram"
+                  ><span class="label">Instagram</span></a
+                >
+              </li>
+              <li>
+                <a href="https://github.com/Mihirchauhan0709" class="icon brands alt fa-github"
+                  ><span class="label">GitHub</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands alt fa-linkedin"
+                  ><span class="label">LinkedIn</span></a
+                >
+              </li>
+            </ul>
+          </section>
+        </section>
+      </footer>
+
+      <!-- Copyright -->
+      <div id="copyright">
+        <ul>
+          <li>&copy; Mihir Chauhan</li>
+          <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

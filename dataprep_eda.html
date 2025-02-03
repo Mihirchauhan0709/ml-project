@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Data Preparation & EDA</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper" class="fade-in">
+      <!-- Header -->
+      <header id="header">
+        <a href="#data-prep-content" class="logo scrolly">Data Preparation & EDA</a>
+    </header>
+    
+
+      <!-- Nav -->
+      <nav id="nav">
+        <ul class="links">
+          <li><a href="index.html">Home</a></li>
+          <!-- <li><a href="#introduction">Introduction</a></li> -->
+          <li class="active"><a href="dataprep_eda.html">Data Preparation & EDA</a></li>
+          <li class="dropdown">
+            <a href="#models" class="dropbtn">Model Implementation</a>
+            <ul class="dropdown-content">
+              <li><a href="#pca">PCA</a></li>
+              <li><a href="#clustering">Clustering</a></li>
+              <li><a href="#arm">Association Rule Mining</a></li>
+              <li><a href="#dt">Decision Trees</a></li>
+              <li><a href="#nb">Naïve Bayes</a></li>
+              <li><a href="#svm">Support Vector Machines</a></li>
+              <li><a href="#regression">Regression</a></li>
+            </ul>
+          </li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#about">About Me</a></li>
+        </ul>
+		<ul class="icons">
+			<!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
+			<li><a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+			<!-- <li><a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
+			<li><a href="https://github.com/Mihirchauhan0709" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+		</ul>
+      </nav>
+
+      <!-- Main -->
+      <div id="main">
+        <article class="post">
+          <header class="major" id="data-prep-content">
+            <h2>Data Collection and Cleaning</h2>
+            <p>
+              This section outlines where and how data was collected and cleaned. Links to raw and cleaned datasets, along with visual representations of the data before and after cleaning, are provided.
+            </p>
+          </header>
+          
+          <!-- Data Collection Section -->
+          <section>
+            <h3>Data Sources</h3>
+            <p>
+                The dataset for this project was obtained from Kaggle, specifically:
+            </p>
+            <ul>
+                <li><a href="https://www.kaggle.com/datasets/sakhawat18/asteroid-dataset/data" target="_blank">
+                    Kaggle Asteroid Dataset</a></li>
+            </ul>
+            <p>
+                Kaggle provides various datasets for research and development. The dataset was downloaded using the 
+                Kaggle API, which requires authentication via a JSON token.
+            </p>
+        </section>
+        
+        <!-- API Token & Dataset Download Instructions -->
+        <section>
+            <h3>Using Kaggle API to Download the Dataset</h3>
+            <p>
+                The dataset was downloaded using the Kaggle API, which requires a valid <strong>API token</strong> 
+                stored in a <code><strong>kaggle.json</strong></code> file.
+                The following steps were followed to download the dataset via the <strong>command line</strong>:
+            </p>
+            <ol>
+                <li>Created an API key from Kaggle by navigating to 
+                    <a href="https://www.kaggle.com/account" target="_blank">Kaggle Account</a>.</li>
+                <li>Downloaded the `kaggle.json` API credentials.</li>
+                <li>Placed the `kaggle.json` file in the required directory (`~/.kaggle/` for Linux/Mac or `%USERPROFILE%/.kaggle/` for Windows).</li>
+                <li>Ran the following command in the <strong>command prompt or terminal</strong> to download the dataset:</li>
+            </ol>
+            <pre><code>kaggle datasets download -d sakhawat18/asteroid-dataset</code></pre>
+            <p>
+                This command automatically downloads the dataset as a `.zip` file, which was then extracted and used for further processing.
+            </p>
+        </section>
+        
+        <!-- API Credentials (Do not expose real credentials in production) -->
+        <section>
+            <h3>API Authentication</h3>
+            <p>
+                The Kaggle API requires authentication via a JSON token. Below is an example format of the `kaggle.json` file used:
+            </p>
+            <pre><code>{
+            "username": "your_kaggle_username",
+            "key": "your_kaggle_api_key"
+        }</code></pre>
+            <p>
+                The API key should be kept secure and <strong>never shared publicly</strong>. For security reasons, it's best to 
+                store this file in the appropriate directory and set permissions to restrict unauthorized access.
+            </p>
+        </section>
+        
+
+          <!-- Raw and Clean Data Section -->
+          <section>
+            <h3>Raw and Cleaned Data Comparison</h3>
+            <p>
+                Below is a sample of the raw dataset, along with missing value counts for each column.
+            </p>
+            
+            <div class="images">
+                <img src="images/raw-data.png" alt="Raw Data Sample" style="width: 1000px;" />
+                <p><strong>Figure 1:</strong> A snapshot of the raw dataset, showing a few initial rows.</p>
+            </div>
+        
+            <section>
+                <h3>Missing Values in the Dataset</h3>
+                <p>
+                    The table below displays the count of missing values in each column of the dataset. Columns with a large number of missing values will require special handling during data preprocessing.
+                </p>
+            
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Missing Values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>id</td><td>0</td></tr>
+                            <tr><td>spkid</td><td>0</td></tr>
+                            <tr><td>full_name</td><td>0</td></tr>
+                            <tr><td>pdes</td><td>0</td></tr>
+                            <tr><td>name</td><td>936460</td></tr>
+                            <tr><td>prefix</td><td>958506</td></tr>
+                            <tr><td>neo</td><td>4</td></tr>
+                            <tr><td>pha</td><td>19921</td></tr>
+                            <tr><td>H</td><td>6263</td></tr>
+                            <tr><td>diameter</td><td>822315</td></tr>
+                            <tr><td>albedo</td><td>823421</td></tr>
+                            <tr><td>diameter_sigma</td><td>822443</td></tr>
+                            <tr><td>orbit_id</td><td>0</td></tr>
+                            <tr><td>epoch</td><td>0</td></tr>
+                            <tr><td>epoch_mjd</td><td>0</td></tr>
+                            <tr><td>epoch_cal</td><td>0</td></tr>
+                            <tr><td>equinox</td><td>0</td></tr>
+                            <tr><td>e</td><td>0</td></tr>
+                            <tr><td>a</td><td>0</td></tr>
+                            <tr><td>q</td><td>0</td></tr>
+                            <tr><td>i</td><td>0</td></tr>
+                            <tr><td>om</td><td>0</td></tr>
+                            <tr><td>w</td><td>0</td></tr>
+                            <tr><td>ma</td><td>1</td></tr>
+                            <tr><td>ad</td><td>4</td></tr>
+                            <tr><td>n</td><td>0</td></tr>
+                            <tr><td>tp</td><td>0</td></tr>
+                            <tr><td>tp_cal</td><td>0</td></tr>
+                            <tr><td>per</td><td>4</td></tr>
+                            <tr><td>per_y</td><td>1</td></tr>
+                            <tr><td>moid</td><td>19921</td></tr>
+                            <tr><td>moid_ld</td><td>127</td></tr>
+                            <tr><td>sigma_e</td><td>19922</td></tr>
+                            <tr><td>sigma_a</td><td>19922</td></tr>
+                            <tr><td>sigma_q</td><td>19922</td></tr>
+                            <tr><td>sigma_i</td><td>19922</td></tr>
+                            <tr><td>sigma_om</td><td>19922</td></tr>
+                            <tr><td>sigma_w</td><td>19922</td></tr>
+                            <tr><td>sigma_ma</td><td>19922</td></tr>
+                            <tr><td>sigma_ad</td><td>19926</td></tr>
+                            <tr><td>sigma_n</td><td>19922</td></tr>
+                            <tr><td>sigma_tp</td><td>19922</td></tr>
+                            <tr><td>sigma_per</td><td>19926</td></tr>
+                            <tr><td>class</td><td>0</td></tr>
+                            <tr><td>rms</td><td>2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+        
+            <p>
+                The dataset contains significant missing values in the <strong>name, prefix, diameter, albedo</strong> and several <strong>sigma</strong> columns. 
+                Handling these missing values is a critical step in data cleaning.
+            </p>
+        </section>
+        <section>
+            <h3>Dropped Columns and Justification</h3>
+            <p>
+                Certain columns were removed from the dataset as they were deemed unnecessary for the analysis. 
+                The table below outlines the columns that were dropped along with the justification for their removal.
+            </p>
+        
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dropped Column</th>
+                            <th>Reason for Removal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td>
+                                The <code>id</code> column contains alphanumeric values, whereas <code>spkid</code> provides a unique numeric identifier for each asteroid. 
+                                Since <code>spkid</code> is sufficient, <code>id</code> was dropped.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>pdes</code></td>
+                            <td>
+                                The <code>pdes</code> column is a split value from <code>full_name</code>, making it redundant. 
+                                Since <code>full_name</code> was already removed, <code>pdes</code> is unnecessary.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>name</code></td>
+                            <td>
+                                The <code>name</code> column is extracted from <code>full_name</code>. As <code>full_name</code> was removed, this column 
+                                does not contribute additional useful information for the analysis.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>prefix</code></td>
+                            <td>
+                                The <code>prefix</code> column contains only a single repeated value across all rows, making it uninformative.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>equinox</code></td>
+                            <td>
+                                The <code>equinox</code> column has only one unique value throughout the dataset, making it irrelevant for analysis.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+
+    <h3>Renamed Columns and Attribute Descriptions</h3>
+    <p>
+        To enhance the readability and usability of the dataset, the column names have been renamed. 
+        The table below provides the original names, their new readable names, and descriptions of each attribute.
+    </p>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Original Name</th>
+                    <th>New Readable Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>spkid</td><td>asteroid_id</td><td>Unique identifier for the asteroid</td></tr>
+                <tr><td>full_name</td><td>asteroid_name</td><td>Full name/designation of the asteroid</td></tr>
+                <tr><td>neo</td><td>near_earth_object</td><td>Flag if it's a Near-Earth Object (NEO)</td></tr>
+                <tr><td>pha</td><td>potentially_hazardous</td><td>Flag if it's a Potentially Hazardous Asteroid (PHA)</td></tr>
+                <tr><td>H</td><td>absolute_magnitude</td><td>Brightness of the asteroid (lower = brighter)</td></tr>
+                <tr><td>diameter</td><td>diameter_km</td><td>Estimated diameter in kilometers</td></tr>
+                <tr><td>albedo</td><td>surface_reflectivity</td><td>Albedo - surface brightness/reflectivity</td></tr>
+                <tr><td>diameter_sigma</td><td>diameter_uncertainty_km</td><td>Uncertainty in diameter estimation</td></tr>
+                <tr><td>orbit_id</td><td>orbit_solution_id</td><td>Orbit solution reference ID</td></tr>
+                <tr><td>epoch</td><td>orbit_epoch</td><td>Epoch (timestamp) of orbital parameters</td></tr>
+                <tr><td>epoch_mjd</td><td>orbit_epoch_mjd</td><td>Epoch in Modified Julian Date format</td></tr>
+                <tr><td>epoch_cal</td><td>orbit_epoch_calendar</td><td>Epoch in calendar date format</td></tr>
+                <tr><td>e</td><td>orbital_eccentricity</td><td>How elongated the orbit is (0 = circular, 1 = parabolic)</td></tr>
+                <tr><td>a</td><td>semi_major_axis_au</td><td>Average distance from the Sun (in Astronomical Units)</td></tr>
+                <tr><td>q</td><td>perihelion_distance_au</td><td>Closest distance to the Sun (in AU)</td></tr>
+                <tr><td>i</td><td>orbital_inclination_deg</td><td>Tilt of the orbit relative to Earth's plane (in degrees)</td></tr>
+                <tr><td>om</td><td>longitude_ascending_node_deg</td><td>Longitude of ascending node (where orbit crosses Earth's plane)</td></tr>
+                <tr><td>w</td><td>argument_perihelion_deg</td><td>Orientation of the perihelion (closest point to Sun)</td></tr>
+                <tr><td>ma</td><td>mean_anomaly_deg</td><td>Position of the asteroid in its orbit (in degrees)</td></tr>
+                <tr><td>ad</td><td>aphelion_distance_au</td><td>Farthest distance from the Sun (in AU)</td></tr>
+                <tr><td>n</td><td>mean_motion_deg_day</td><td>Orbital speed (degrees per day)</td></tr>
+                <tr><td>tp</td><td>time_perihelion_passage</td><td>Time when asteroid reaches perihelion</td></tr>
+                <tr><td>tp_cal</td><td>time_perihelion_calendar</td><td>Perihelion passage in calendar format</td></tr>
+                <tr><td>per</td><td>orbital_period_days</td><td>Time taken to complete one orbit (in days)</td></tr>
+                <tr><td>per_y</td><td>orbital_period_years</td><td>Time taken to complete one orbit (in years)</td></tr>
+                <tr><td>moid</td><td>earth_moid_au</td><td>Minimum Orbit Intersection Distance with Earth (in AU)</td></tr>
+                <tr><td>moid_ld</td><td>earth_moid_ld</td><td>Earth MOID in Lunar Distances (1 LD = Earth-Moon distance)</td></tr>
+                <tr><td>sigma_e</td><td>uncertainty_eccentricity</td><td>Uncertainty in orbital eccentricity</td></tr>
+                <tr><td>sigma_a</td><td>uncertainty_semi_major_axis</td><td>Uncertainty in semi-major axis</td></tr>
+                <tr><td>sigma_q</td><td>uncertainty_perihelion_distance</td><td>Uncertainty in perihelion distance</td></tr>
+                <tr><td>sigma_i</td><td>uncertainty_orbital_inclination</td><td>Uncertainty in orbital inclination</td></tr>
+                <tr><td>sigma_om</td><td>uncertainty_longitude_ascending_node</td><td>Uncertainty in longitude of ascending node</td></tr>
+                <tr><td>sigma_w</td><td>uncertainty_argument_perihelion</td><td>Uncertainty in argument of perihelion</td></tr>
+                <tr><td>sigma_ma</td><td>uncertainty_mean_anomaly</td><td>Uncertainty in mean anomaly</td></tr>
+                <tr><td>sigma_ad</td><td>uncertainty_aphelion_distance</td><td>Uncertainty in aphelion distance</td></tr>
+                <tr><td>sigma_n</td><td>uncertainty_mean_motion</td><td>Uncertainty in mean motion</td></tr>
+                <tr><td>sigma_tp</td><td>uncertainty_time_perihelion_passage</td><td>Uncertainty in time of perihelion passage</td></tr>
+                <tr><td>sigma_per</td><td>uncertainty_orbital_period</td><td>Uncertainty in orbital period</td></tr>
+                <tr><td>class</td><td>asteroid_class</td><td>Classification of asteroid (Apollo, Amor, etc.)</td></tr>
+                <tr><td>rms</td><td>orbit_fit_rms</td><td>Root Mean Square (RMS) residual of orbit fit</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <section>
+        <h3>Data Cleaning and Missing Value Handling</h3>
+        <p>
+            The dataset underwent several cleaning steps to handle missing values and improve data quality. 
+            Various imputation techniques, including median replacement and regression-based imputation, were used.
+        </p>
+    
+        <h4>1. Filling Missing Values Using Median Imputation</h4>
+        <p>
+            Missing values in key numerical columns such as <code>absolute_magnitude</code>, 
+            <code>orbit_fit_rms</code>, <code>orbital_period_days</code>, <code>orbital_period_years</code>, 
+            <code>mean_anomaly_deg</code>, and <code>earth_moid_au</code> were replaced with their respective median values.
+        </p>
+    
+        <!-- Commented Code Snippet -->
+        <pre><code>
+    # Filling missing values using median imputation
+    data[["absolute_magnitude", "orbit_fit_rms", "orbital_period_days", 
+          "orbital_period_years", "mean_anomaly_deg", "earth_moid_au"]] = 
+    data[["absolute_magnitude", "orbit_fit_rms", "orbital_period_days", 
+          "orbital_period_years", "mean_anomaly_deg", "earth_moid_au"]].fillna(
+              data[["absolute_magnitude", "orbit_fit_rms", "orbital_period_days", 
+                    "orbital_period_years", "mean_anomaly_deg", "earth_moid_au"]].median())
+        </code></pre>
+    
+        <h4>2. Predictive Imputation for Diameter and Surface Reflectivity</h4>
+        <p>
+            Since the <code>diameter_km</code>, <code>surface_reflectivity</code>, and <code>diameter_uncertainty_km</code> 
+            attributes had missing values, a regression-based imputation was applied. 
+            A **Linear Regression model** was trained on available data to predict missing values using features such as 
+            <code>absolute_magnitude</code>, <code>semi_major_axis_au</code>, and <code>perihelion_distance_au</code>.
+        </p>
+    
+        <!-- Commented Code Snippet -->
+        <pre><code>
+    from sklearn.linear_model import LinearRegression
+    
+    # Selecting relevant features for predicting 'diameter'
+    features = ['absolute_magnitude', 'semi_major_axis_au', 'perihelion_distance_au', 
+                'orbital_eccentricity', 'orbital_inclination_deg', 'earth_moid_au']
+    
+    # Splitting dataset into training (non-missing values) and missing (to be predicted)
+    df_train = data[data['diameter_km'].notnull()]
+    df_missing = data[data['diameter_km'].isnull()]
+    
+    # Train a Linear Regression model
+    model = LinearRegression()
+    model.fit(df_train[features], df_train['diameter_km'])
+    
+    # Predict missing values
+    data.loc[data['diameter_km'].isnull(), 'diameter_km'] = model.predict(df_missing[features])
+        </code></pre>
+    
+        <h4>3. Filling Missing Values for Earth MOID and Aphelion Distance</h4>
+        <p>
+            Missing values in <code>earth_moid_ld</code> were filled using their median value. 
+            This ensures that crucial parameters for asteroid impact risk remain consistent.
+        </p>
+    
+        <!-- Commented Code Snippet -->
+        <pre><code>
+    # Filling missing values in 'earth_moid_ld' using median
+    data[["earth_moid_ld"]] = data[["earth_moid_ld"]].fillna(data[["earth_moid_ld"]].median())
+        </code></pre>
+    
+        <h4>4. Predictive Imputation for Uncertainty Attributes</h4>
+        <p>
+            Several **uncertainty-related attributes** (such as <code>uncertainty_eccentricity</code>, 
+            <code>uncertainty_semi_major_axis</code>, and <code>uncertainty_perihelion_distance</code>) had missing values. 
+            These were imputed using **Linear Regression models**, where missing values were predicted based on related orbital parameters.
+        </p>
+    
+        <!-- Commented Code Snippet -->
+        <pre><code>
+    from sklearn.linear_model import LinearRegression
+    
+    # Feature selection for each uncertainty attribute
+    uncertainty_features = {
+        "uncertainty_eccentricity": ["orbital_eccentricity", "semi_major_axis_au", "perihelion_distance_au"],
+        "uncertainty_semi_major_axis": ["semi_major_axis_au", "orbital_period_days", "earth_moid_au"],
+        "uncertainty_perihelion_distance": ["perihelion_distance_au", "orbital_eccentricity", "earth_moid_au"],
+        "uncertainty_orbital_inclination": ["orbital_inclination_deg", "semi_major_axis_au", "orbital_period_days"],
+        "uncertainty_longitude_ascending_node": ["longitude_ascending_node_deg", "semi_major_axis_au", "orbital_eccentricity"],
+        "uncertainty_argument_perihelion": ["argument_perihelion_deg", "orbital_eccentricity", "perihelion_distance_au"],
+        "uncertainty_mean_anomaly": ["mean_anomaly_deg", "orbital_period_days", "semi_major_axis_au"],
+        "uncertainty_aphelion_distance": ["aphelion_distance_au", "semi_major_axis_au", "orbital_eccentricity"],
+        "uncertainty_mean_motion": ["mean_motion_deg_day", "orbital_period_days", "semi_major_axis_au"],
+        "uncertainty_time_perihelion_passage": ["time_perihelion_passage", "orbital_period_days", "semi_major_axis_au"],
+        "uncertainty_orbital_period": ["orbital_period_days", "semi_major_axis_au", "earth_moid_au"]
+    }
+    
+    # Apply regression-based imputation for each uncertainty column
+    for col, features in uncertainty_features.items():
+        df_train = data[data[col].notnull()]
+        df_missing = data[data[col].isnull()]
+        
+        if not df_missing.empty:
+            model = LinearRegression()
+            model.fit(df_train[features], df_train[col])
+            data.loc[data[col].isnull(), col] = model.predict(df_missing[features])
+        </code></pre>
+    
+        <h4>Summary of Cleaning Process</h4>
+        <ul>
+            <li>Used **median imputation** for common numerical attributes.</li>
+            <li>Applied **regression-based imputation** to predict missing values for <code>diameter_km</code> and <code>surface_reflectivity</code>.</li>
+            <li>Replaced missing values in **earth-moid-related attributes** with their median values.</li>
+            <li>Utilized **Linear Regression** to impute missing values for uncertainty-related attributes.</li>
+        </ul>
+    
+        <p>
+            This data cleaning process ensures that missing values do not negatively impact the dataset's integrity 
+            and that essential orbital characteristics remain reliable for further analysis.
+        </p>
+    </section>
+    
+        
+            <div class="images">
+                <h3>Cleaned data</h3>
+                <img src="images/cleaned-data.png" alt="Cleaned Data Sample" style="width: 1000px;" />
+                <p><strong>Figure 2:</strong> A snapshot of the cleaned dataset after handling missing values.</p>
+            </div>
+        </section>
+        
+
+          <!-- Visualizations Section -->
+          <section>
+            <h3>Exploratory Data Analysis</h3>
+            <p>
+              Below are visualizations created during data exploration and preparation:
+            </p>
+            <section>
+                <h3>Key Insights from the Visualizations</h3>
+                <p>
+                    The following visualizations provide important insights into asteroid properties, orbital characteristics, and potential collision risks.
+                    Each visualization highlights different aspects of asteroid behavior, distribution, and orbital mechanics.
+                </p>
+            
+                <div class="visual-insights">
+                    <div class="insight">
+                        <h4>1. Asteroid Class Distribution</h4>
+                        <img src="images/asteroid_class_distribution.png" alt="Asteroid Class Distribution" width="1000px" />
+                        <p><strong>Insight:</strong> The most common asteroid class is the MBA (Main Belt Asteroids), followed by Apollo, Amor, and Atens.</p>
+                        <p><strong>Implication:</strong> Most asteroids reside in the main belt, but Apollo asteroids are significant as they cross Earth's orbit, posing potential collision threats.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>2️. Distribution of Orbital Inclinations</h4>
+                        <img src="images/orbital_inclination_distribution.png" alt="Orbital Inclination Distribution" />
+                        <p><strong>Insight:</strong> Most asteroids have a low orbital inclination (less than 25 degrees), with fewer at higher inclinations.</p>
+                        <p><strong>Implication:</strong> Lower inclination asteroids have stable orbits, while higher inclination asteroids may be influenced by gravitational interactions.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>3️. Distribution of Asteroid Sizes</h4>
+                        <img src="images/asteroid_size_distribution.png" alt="Asteroid Size Distribution" width="1000px" />
+                        <p><strong>Insight:</strong> Most asteroids are relatively small, with a long tail representing a few very large asteroids.</p>
+                        <p><strong>Implication:</strong> Smaller asteroids are likely fragments from larger bodies. Large asteroids are rare but more significant for impact risks.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>4️. Earth MOID vs. Absolute Magnitude</h4>
+                        <img src="images/earth_moid_vs_magnitude.png" alt="Earth MOID vs Absolute Magnitude" width="1000px" />
+                        <p><strong>Insight:</strong> A concentration of small asteroids (higher absolute magnitude) exists at very low MOID values.</p>
+                        <p><strong>Implication:</strong> Small MOID values combined with larger asteroids indicate higher collision risks, necessitating closer monitoring.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>5️. Eccentricity vs. Semi-Major Axis</h4>
+                        <img src="images/eccentricity_vs_semi_major_axis.png" alt="Eccentricity vs Semi-Major Axis" />
+                        <p><strong>Insight:</strong> Asteroids with larger semi-major axes tend to have more elliptical orbits.</p>
+                        <p><strong>Implication:</strong> High eccentricity asteroids are more dynamic and influenced by planetary gravitational interactions.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>6️. Orbital Inclination by Asteroid Class</h4>
+                        <img src="images/orbital_inclination_by_class.png" alt="Orbital Inclination by Asteroid Class" width="1000px" />
+                        <p><strong>Insight:</strong> Different asteroid classes exhibit varying inclinations, with some extreme outliers.</p>
+                        <p><strong>Implication:</strong> These variations indicate past interactions with celestial bodies and help refine asteroid classification models.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>7️. Pairplot of Key Orbital Parameters</h4>
+                        <img src="images/pairplot_orbital_parameters.png" alt="Pairplot of Orbital Parameters" width="1000px" />
+                        <p><strong>Insight:</strong> There are clear relationships between semi-major axis, eccentricity, and perihelion distance.</p>
+                        <p><strong>Implication:</strong> These relationships allow us to categorize asteroids and predict potential Earth impactors.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>8️. Perihelion Distance vs. Semi-Major Axis</h4>
+                        <img src="images/perihelion_vs_semi_major.png" alt="Perihelion Distance vs Semi-Major Axis" />
+                        <p><strong>Insight:</strong> Asteroids with lower perihelion distances come dangerously close to the Sun and sometimes to Earth's orbit.</p>
+                        <p><strong>Implication:</strong> Such objects require monitoring, as orbital perturbations could bring them closer to Earth over time.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>9️. Violin Plot of Orbital Eccentricity by Asteroid Class</h4>
+                        <img src="images/violin_plot_eccentricity.png" alt="Violin Plot of Orbital Eccentricity" />
+                        <p><strong>Insight:</strong> Some asteroid classes exhibit significantly higher eccentricities, while others remain clustered.</p>
+                        <p><strong>Implication:</strong> Higher eccentricity means more stretched orbits, making an asteroid's trajectory harder to predict.</p>
+                    </div>
+            
+                    <div class="insight">
+                        <h4>10. 3D Visualization of Orbital Parameters</h4>
+                        <img src="images/3d_orbital_parameters.png" alt="3D Visualization of Orbital Parameters" />
+                        <p><strong>Insight:</strong> There is a dense cluster of asteroids with low eccentricity and inclination, but some objects show extreme values.</p>
+                        <p><strong>Implication:</strong> Identifying outliers in 3D space helps in detecting asteroids influenced by gravitational forces or past collisions.</p>
+                    </div>
+                </div>
+            </section>
+            
+          </section>
+
+          <!-- Summary Section -->
+          <section>
+            <h3>Summary</h3>
+            <p>
+              The data preparation and exploratory analysis highlighted trends and inconsistencies that were addressed during the cleaning process. For details on the full analysis, please refer to the linked Jupyter notebooks.
+            </p>
+            <ul>
+              <li><a href="https://github.com/" target="_blank">View Python Code</a></li>
+              <li><a href="https://www.kaggle.com/datasets/sakhawat18/asteroid-dataset/data" target="_blank">View Full Datasets</a></li>
+            </ul>
+          </section>
+        </article>
+      </div>
+
+     <!-- Footer -->
+     <footer id="footer">
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p>If you have any questions or inquiries, feel free to send me a message.</p>
+    
+            <form id="contact-form" onsubmit="SendMail(); return false;">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Your Message" rows="3" required></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><button type="submit" class="button">Send Message</button></li>
+                </ul>
+            </form>
+        </section>
+    
+    <section class="split contact">
+      <section class="alt">
+        <h3>Address</h3>
+        <p>
+          1475 Folsom St.<br />
+          Boulder, CO 80302
+        </p>
+      </section>
+      <section>
+        <h3>Phone</h3>
+        <p><a href="#">(720) 813-5491)</a></p>
+      </section>
+      <section>
+        <h3>Email</h3>
+        <p><a href="#">mihirchauhan951@gmail.com</a></p>
+      </section>
+      <section>
+        <h3>Social</h3>
+        <ul class="icons alt">
+          <li>
+            <a href="https://x.com/mihir_0702" class="icon brands alt fa-twitter"
+              ><span class="label">Twitter</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.facebook.com/mihir.chauhan.503" class="icon brands alt fa-facebook-f"
+              ><span class="label">Facebook</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands alt fa-instagram"
+              ><span class="label">Instagram</span></a
+            >
+          </li>
+          <li>
+            <a href="https://github.com/Mihirchauhan0709" class="icon brands alt fa-github"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands alt fa-linkedin"
+              ><span class="label">LinkedIn</span></a
+            >
+          </li>
+        </ul>
+      </section>
+    </section>
+  </footer>
+
+  <!-- Copyright -->
+  <div id="copyright">
+    <ul>
+      <li>&copy; Mihir Chauhan</li>
+      <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+    </ul>
+  </div>
+</div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
