@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Implementation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    
+    <!-- JavaScript for dynamic content -->
+    <script defer src="assets/js/model_nav.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+    (function () {
+        // Initialize EmailJS with your public key
+        emailjs.init({
+            publicKey: "GhFtq6Okk97dn7Uf5",
+        });
+    })();
+
+    function SendMail() {
+        var params = {
+            from_name: document.getElementById("name").value,
+            from_email: document.getElementById("email").value,
+            message: document.getElementById("message").value
+        };
+
+        emailjs.send("service_692e32d", "template_n3h2m8o", params)
+        .then(function (res) {
+            alert("Message sent successfully! Status: " + res.status);
+            document.getElementById("contact-form").reset(); // Clear the form after successful submission
+        })
+        .catch(function (err) {
+            alert("Failed to send message. Please try again.");
+            console.error("EmailJS Error: ", err);
+        });
+    }
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll('a.scrolly').forEach(anchor => {
+				anchor.addEventListener("click", function (e) {
+					e.preventDefault();
+					const targetId = this.getAttribute("href").substring(1);
+					const targetElement = document.getElementById(targetId);
+	
+					if (targetElement) {
+						window.scrollTo({
+							top: targetElement.offsetTop - 10, // Adjust if needed
+							behavior: "smooth"
+						});
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper" class="fade-in">
+
+        <!-- Header -->
+        <header id="header">
+            <a href="#models-overview" class="logo scrolly">Model Implementation</a>
+        </header>
+
+        <!-- Main Navigation -->
+        <nav id="nav">
+        <ul class="links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="dataprep_eda.html">Data Preparation & EDA</a></li>
+          <li class="active" class="dropdown">
+            <a href="model_implementation.html" class="dropbtn">Model Implementation</a>
+            <!-- <ul class="dropdown-content">
+              <li><a href="#pca">PCA</a></li>
+              <li><a href="#clustering">Clustering</a></li>
+              <li><a href="#arm">Association Rule Mining</a></li>
+              <li><a href="#dt">Decision Trees</a></li>
+              <li><a href="#nb">Naïve Bayes</a></li>
+              <li><a href="#svm">Support Vector Machines</a></li>
+              <li><a href="#regression">Regression</a></li>
+            </ul> -->
+          </li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="https://mihirchauhan0709.github.io/chauhan-mihir/" target=”_blank” >About Me</a></li>
+        </ul>
+		<ul class="icons">
+			<!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
+			<li><a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+			<!-- <li><a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
+			<li><a href="https://github.com/Mihirchauhan0709" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+		</ul>
+      </nav>
+
+        <!-- Internal Model Navigation -->
+        <nav id="sub-nav" class="sub-nav">
+            <ul>
+                <li><a href="#" class="model-link active" data-target="pca">PCA</a></li>
+                <li><a href="#" class="model-link" data-target="clustering">Clustering</a></li>
+                <li><a href="#" class="model-link" data-target="arm">Association Rule Mining</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div id="main">
+            <header class="major">
+                <h1>Model Implementation</h1>
+                <p>Explore the machine learning models used for asteroid trajectory prediction.</p>
+            </header>
+
+            <!-- PCA Section -->
+            <section id="pca" class="model-section active">
+                <h2>Principal Component Analysis (PCA)</h2>
+                <p>PCA is used to reduce dimensionality and visualize asteroid data.</p>
+                <img src="images/pca_2d_plot.png" alt="PCA 2D Plot" class="image fit">
+            </section>
+
+            <!-- Clustering Section -->
+            <section id="clustering" class="model-section">
+                <h2>Clustering</h2>
+                <p>Clustering groups asteroids based on their trajectory, size, velocity, and orbit.</p>
+                <img src="images/clustering_results.png" alt="Clustering Results" class="image fit">
+            </section>
+
+            <!-- Association Rule Mining Section -->
+            <section id="arm" class="model-section">
+                <h2>Association Rule Mining (ARM)</h2>
+                <p>ARM finds relationships between asteroid properties and collision risks.</p>
+                <img src="images/arm_results.png" alt="ARM Results" class="image fit">
+            </section>
+        </div>
+
+     <!-- Footer -->
+     <footer id="footer">
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p>If you have any questions or inquiries, feel free to send me a message.</p>
+    
+            <form id="contact-form" onsubmit="SendMail(); return false;">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Your Message" rows="3" required></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><button type="submit" class="button">Send Message</button></li>
+                </ul>
+            </form>
+        </section>
+    
+    <section class="split contact">
+      <section class="alt">
+        <h3>Address</h3>
+        <p>
+          1475 Folsom St.<br />
+          Boulder, CO 80302
+        </p>
+      </section>
+      <section>
+        <h3>Phone</h3>
+        <p><a href="#">(720) 813-5491)</a></p>
+      </section>
+      <section>
+        <h3>Email</h3>
+        <p><a href="#">mihirchauhan951@gmail.com</a></p>
+      </section>
+      <section>
+        <h3>Social</h3>
+        <ul class="icons alt">
+          <li>
+            <a href="https://x.com/mihir_0702" target="_blank" class="icon brands alt fa-twitter"
+              ><span class="label">Twitter</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.facebook.com/mihir.chauhan.503" target="_blank" class="icon brands alt fa-facebook-f"
+              ><span class="label">Facebook</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.instagram.com/_mihir__chauhan_/#" target="_blank" class="icon brands alt fa-instagram"
+              ><span class="label">Instagram</span></a
+            >
+          </li>
+          <li>
+            <a href="https://github.com/Mihirchauhan0709" target="_blank" class="icon brands alt fa-github"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/mihirchauhan10/" target="_blank" class="icon brands alt fa-linkedin"
+              ><span class="label">LinkedIn</span></a
+            >
+          </li>
+        </ul>
+      </section>
+    </section>
+  </footer>
+
+  <!-- Copyright -->
+  <div id="copyright">
+    <ul>
+      <li>&copy; Mihir Chauhan</li>
+      <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+    </ul>
+  </div>
+</div>
+
+    <!-- Scripts -->
+    <script src="assets/js/model_nav.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+</html>

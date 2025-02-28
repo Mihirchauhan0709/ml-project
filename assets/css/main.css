@@ -3896,6 +3896,66 @@ input, select, textarea {
 		} */
 
 /* Main */
+/* Internal Navigation Bar */
+.sub-nav {
+    display: flex;
+    justify-content: center;
+    /* background-color: #333; */
+	background: rgba(0, 0, 0, 0); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Adds a smooth glass effect */
+    padding: 15px;
+    margin-top: 20px;  /* Adjust this to move navbar up if needed */
+    border-radius: 5px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sub-nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+	z-index: 9999;
+}
+
+.sub-nav a {
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	font-weight: 700;
+    color: white;
+	/* font-weight: bold;	 */
+    text-decoration: none;
+    padding: 10px 20px;
+    /* border-radius: 50px; */
+    transition: background 0.3s;
+	position: relative;
+}
+
+/* Hover Effect */
+.sub-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Active Link Underline Animation */
+.sub-nav a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #007bff;
+    left: 0;
+    bottom: -5px;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.sub-nav a.active::after {
+    transform: scaleX(1);
+}
+/* .sub-nav a:hover, .sub-nav a.active {
+    background-color: #007bff;
+} */
+
+
+
 
 	#main {
 		background-color: #ffffff;

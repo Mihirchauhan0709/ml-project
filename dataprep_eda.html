@@ -11,6 +11,51 @@
     <noscript
       ><link rel="stylesheet" href="assets/css/noscript.css"
     /></noscript>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+    (function () {
+        // Initialize EmailJS with your public key
+        emailjs.init({
+            publicKey: "GhFtq6Okk97dn7Uf5",
+        });
+    })();
+
+    function SendMail() {
+        var params = {
+            from_name: document.getElementById("name").value,
+            from_email: document.getElementById("email").value,
+            message: document.getElementById("message").value
+        };
+
+        emailjs.send("service_692e32d", "template_n3h2m8o", params)
+        .then(function (res) {
+            alert("Message sent successfully! Status: " + res.status);
+            document.getElementById("contact-form").reset(); // Clear the form after successful submission
+        })
+        .catch(function (err) {
+            alert("Failed to send message. Please try again.");
+            console.error("EmailJS Error: ", err);
+        });
+    }
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll('a.scrolly').forEach(anchor => {
+				anchor.addEventListener("click", function (e) {
+					e.preventDefault();
+					const targetId = this.getAttribute("href").substring(1);
+					const targetElement = document.getElementById(targetId);
+	
+					if (targetElement) {
+						window.scrollTo({
+							top: targetElement.offsetTop - 10, // Adjust if needed
+							behavior: "smooth"
+						});
+					}
+				});
+			});
+		});
+	</script>
   </head>
   <body class="is-preload">
     <!-- Wrapper -->
@@ -25,10 +70,10 @@
       <nav id="nav">
         <ul class="links">
           <li><a href="index.html">Home</a></li>
-          <!-- <li><a href="#introduction">Introduction</a></li> -->
+          <li><a href="introduction.html">Introduction</a></li>
           <li class="active"><a href="dataprep_eda.html">Data Preparation & EDA</a></li>
           <li class="dropdown">
-            <a href="#models" class="dropbtn">Model Implementation</a>
+            <a href="model_implementation.html" class="dropbtn">Model Implementation</a>
             <ul class="dropdown-content">
               <li><a href="#pca">PCA</a></li>
               <li><a href="#clustering">Clustering</a></li>
@@ -40,7 +85,7 @@
             </ul>
           </li>
           <li><a href="#conclusion">Conclusion</a></li>
-          <li><a href="#about">About Me</a></li>
+          <li><a href="https://mihirchauhan0709.github.io/chauhan-mihir/" target=”_blank” >About Me</a></li>
         </ul>
 		<ul class="icons">
 			<!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
