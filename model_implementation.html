@@ -551,10 +551,13 @@
                         Using the optimal <strong>k=5</strong>, we ran <strong>K-Means</strong> on the PCA-transformed dataset.
                         The clustering results show distinct asteroid groups, with red markers indicating the cluster centroids.
                     </p>
+
+                    <img src="images/kmeans_clustering_3.png" alt="K-Means Clustering" style="width: 1000px;">
+                    <img src="images/kmeans_clustering_4.png" alt="K-Means Clustering" style="width: 1000px;">
                     <img src="images/kmeans_clustering.png" alt="K-Means Clustering" style="width: 1000px;">
                 
                     <p>
-                        📌 <a href="https://github.com/YOUR_GITHUB_REPO" target="_blank"><strong>View Full K-Means Implementation on GitHub</strong></a>
+                        📌 <a href="https://github.com/Mihirchauhan0709/ml-project/blob/main/Models/clustering.ipynb" target="_blank"><strong>View Full K-Means Implementation on GitHub</strong></a>
                     </p>
                 </section>
                 
@@ -581,7 +584,7 @@
                     <img src="images/hierarchical_clustering.png" alt="Hierarchical Clustering" class="image fit">
 
                     <p>
-                        📌 <a href="https://github.com/YOUR_GITHUB_REPO" target="_blank"><strong>View Full Hierarchical Clustering Implementation on GitHub</strong></a>
+                        📌 <a href="https://github.com/Mihirchauhan0709/ml-project/blob/main/Models/clustering.ipynb" target="_blank"><strong>View Full Hierarchical Clustering Implementation on GitHub</strong></a>
                     </p>
                 </section>
 
@@ -700,12 +703,15 @@
 
               <!-- Data Preparation -->
               <section>
-                <h3>Data Preprocessing for ARM</h3>
-                <p>
-                    Before applying the Apriori algorithm, it was necessary to <strong>clean and transform</strong> the dataset into a categorical format. 
-                    Since ARM works best with transaction-style data, we performed the following preprocessing steps:
-                </p>
-            
+                  <h3>Data Preprocessing for ARM</h3>
+                  <p>
+                      Before applying the Apriori algorithm, it was necessary to <strong>clean and transform</strong> the dataset into a categorical format. 
+                      Since ARM works best with transaction-style data, we performed the following preprocessing steps:
+                    </p>
+                    
+                    <p>View the code For ARM: 
+                      <a href="https://github.com/Mihirchauhan0709/ml-project/blob/main/Models/arm.ipynb" target="_blank">Github </a>
+                  </p>
                 <h4>Handling Categorical Variables</h4>
                 <p>
                     The dataset contained categorical values in different formats, including boolean values (`True/False`) and inconsistent 
@@ -971,25 +977,41 @@
                   </p>
           
                   <div class="table-container">
-                      <table>
-                          <thead>
-                              <tr>
-                                  <th>Antecedents</th>
-                                  <th>Consequents</th>
-                                  <th>Support</th>
-                                  <th>Confidence</th>
-                                  <th>Lift</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr><td>potentially_hazardous, near_earth_object</td><td>asteroid_class_APO</td><td>0.000523</td><td>0.946</td><td>563.51</td></tr>
-                              <tr><td>asteroid_class_APO</td><td>potentially_hazardous</td><td>0.000523</td><td>0.312</td><td>563.51</td></tr>
-                              <tr><td>asteroid_class_APO, near_earth_object</td><td>potentially_hazardous</td><td>0.000523</td><td>0.312</td><td>563.51</td></tr>
-                              <tr><td>near_earth_object, Orbit_Category_0</td><td>asteroid_class_APO</td><td>0.001505</td><td>0.689</td><td>416.34</td></tr>
-                              <tr><td>near_earth_object</td><td>asteroid_class_APO</td><td>0.001505</td><td>0.896</td><td>416.34</td></tr>
-                          </tbody>
-                      </table>
-                  </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Antecedents</th>
+                                <th>Consequents</th>
+                                <th>Antecedent Support</th>
+                                <th>Consequent Support</th>
+                                <th>Support</th>
+                                <th>Confidence</th>
+                                <th>Lift</th>
+                                <th>Representativity</th>
+                                <th>Leverage</th>
+                                <th>Conviction</th>
+                                <th>Zhang's Metric</th>
+                                <th>Jaccard</th>
+                                <th>Certainty</th>
+                                <th>Kulczynski</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>(asteroid_class_OMB)</td><td>(Orbit_Category_2, Size_Category_2)</td><td>0.056030</td><td>0.148700</td><td>0.030337</td><td>0.541437</td><td>3.641141</td><td>1.0</td><td>0.022005</td><td>1.856451</td><td>0.768415</td><td>0.173956</td><td>0.461338</td><td>0.372725</td></tr>
+                            <tr><td>(Orbit_Category_2, Size_Category_2)</td><td>(asteroid_class_OMB)</td><td>0.148700</td><td>0.056030</td><td>0.030337</td><td>0.204013</td><td>3.641141</td><td>1.0</td><td>0.022005</td><td>1.185911</td><td>0.852062</td><td>0.173956</td><td>0.156766</td><td>0.372725</td></tr>
+                            <tr><td>(Size_Category_1, asteroid_class_OMB)</td><td>(Orbit_Category_2)</td><td>0.016032</td><td>0.333334</td><td>0.016032</td><td>1.000000</td><td>2.999992</td><td>1.0</td><td>0.010688</td><td>inf</td><td>0.677528</td><td>0.048096</td><td>1.000000</td><td>0.524048</td></tr>
+                            <tr><td>(Orbit_Category_2)</td><td>(Size_Category_1, asteroid_class_OMB)</td><td>0.333334</td><td>0.016032</td><td>0.016032</td><td>0.048096</td><td>2.999992</td><td>1.0</td><td>0.010688</td><td>1.033684</td><td>1.000000</td><td>0.048096</td><td>0.032587</td><td>0.524048</td></tr>
+                            <tr><td>(asteroid_class_OMB)</td><td>(Orbit_Category_2)</td><td>0.056030</td><td>0.333334</td><td>0.056030</td><td>1.000000</td><td>2.999992</td><td>1.0</td><td>0.037353</td><td>inf</td><td>0.706236</td><td>0.168089</td><td>1.000000</td><td>0.584045</td></tr>
+                            <tr><td>(Size_Category_2, asteroid_class_OMB)</td><td>(Orbit_Category_2)</td><td>0.030337</td><td>0.333334</td><td>0.030337</td><td>1.000000</td><td>2.999992</td><td>1.0</td><td>0.020224</td><td>inf</td><td>0.687523</td><td>0.091010</td><td>1.000000</td><td>0.545505</td></tr>
+                            <tr><td>(Orbit_Category_2)</td><td>(Size_Category_2, asteroid_class_OMB)</td><td>0.333334</td><td>0.030337</td><td>0.030337</td><td>0.091010</td><td>2.999992</td><td>1.0</td><td>0.020224</td><td>1.066748</td><td>1.000000</td><td>0.091010</td><td>0.062571</td><td>0.545505</td></tr>
+                            <tr><td>(Orbit_Category_2)</td><td>(asteroid_class_OMB)</td><td>0.333334</td><td>0.056030</td><td>0.056030</td><td>0.168089</td><td>2.999992</td><td>1.0</td><td>0.037353</td><td>1.134701</td><td>1.000000</td><td>0.168089</td><td>0.118711</td><td>0.584045</td></tr>
+                            <tr><td>(asteroid_class_OMB)</td><td>(Orbit_Category_2, Size_Category_1)</td><td>0.056030</td><td>0.104278</td><td>0.016032</td><td>0.286136</td><td>2.743966</td><td>1.0</td><td>0.010189</td><td>1.254751</td><td>0.673288</td><td>0.111122</td><td>0.203029</td><td>0.219940</td></tr>
+                            <tr><td>(Orbit_Category_2, Size_Category_1)</td><td>(asteroid_class_OMB)</td><td>0.104278</td><td>0.056030</td><td>0.016032</td><td>0.153744</td><td>2.743966</td><td>1.0</td><td>0.010189</td><td>1.115467</td><td>0.709555</td><td>0.111122</td><td>0.103514</td><td>0.219940</td></tr>
+                            <tr><td>(Size_Category_2)</td><td>(Orbit_Category_2)</td><td>0.333323</td><td>0.333334</td><td>0.148700</td><td>0.446113</td><td>1.338334</td><td>1.0</td><td>0.037592</td><td>1.203612</td><td>0.379198</td><td>0.287088</td><td>0.169168</td><td>0.446105</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
           
                   <p>
                       Below are two network visualizations of the discovered <strong>association rules</strong>. The first visualization shows the raw 
