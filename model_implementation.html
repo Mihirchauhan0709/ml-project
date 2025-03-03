@@ -114,24 +114,903 @@
 
             <!-- PCA Section -->
             <section id="pca" class="model-section active">
-                <h2>Principal Component Analysis (PCA)</h2>
-                <p>PCA is used to reduce dimensionality and visualize asteroid data.</p>
-                <img src="images/pca_2d_plot.png" alt="PCA 2D Plot" class="image fit">
+              <h2>Principal Component Analysis (PCA)</h2>
+              <p>
+                  Principal Component Analysis (PCA) is a dimensionality reduction technique used to transform high-dimensional data into a 
+                  lower-dimensional representation while retaining the most important variance in the dataset. By doing so, PCA helps in 
+                  visualizing complex data, reducing computational cost, and eliminating noise. The main idea behind PCA is to identify 
+                  new axes (principal components) that maximize the variance in the dataset, effectively summarizing the original features 
+                  with fewer dimensions.
+              </p>
+          
+              <!-- Dataset Selection -->
+              <section>
+                  <h3>Dataset Selection and Preprocessing</h3>
+                  <p>For PCA analysis, we selected key orbital and reflectivity-related parameters from our asteroid dataset, including:</p>
+                  <div class="table-container">
+                      <table>
+                          <thead>
+                              <tr>
+                                  <th>Original Name</th>
+                                  <th>New Readable Name</th>
+                                  <th>Description</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr><td>e</td><td>orbital_eccentricity</td><td>How elongated the orbit is (0 = circular, 1 = parabolic)</td></tr>
+                              <tr><td>a</td><td>semi_major_axis_au</td><td>Average distance from the Sun (in Astronomical Units)</td></tr>
+                              <tr><td>q</td><td>perihelion_distance_au</td><td>Closest distance to the Sun (in AU)</td></tr>
+                              <tr><td>i</td><td>orbital_inclination_deg</td><td>Tilt of the orbit relative to Earth's plane (in degrees)</td></tr>
+                              <tr><td>ad</td><td>aphelion_distance_au</td><td>Farthest distance from the Sun (in AU)</td></tr>
+                              <tr><td>n</td><td>mean_motion_deg_day</td><td>Orbital speed (degrees per day)</td></tr>
+                              <tr><td>per</td><td>orbital_period_days</td><td>Time taken to complete one orbit (in days)</td></tr>
+                              <tr><td>per_y</td><td>orbital_period_years</td><td>Time taken to complete one orbit (in years)</td></tr>
+                              <tr><td>moid</td><td>earth_moid_au</td><td>Minimum Orbit Intersection Distance with Earth (in AU)</td></tr>
+                              <tr><td>moid_ld</td><td>earth_moid_ld</td><td>Earth MOID in Lunar Distances (1 LD = Earth-Moon distance)</td></tr>
+                              <tr><td>sigma_e</td><td>uncertainty_eccentricity</td><td>Uncertainty in orbital eccentricity</td></tr>
+                              <tr><td>sigma_a</td><td>uncertainty_semi_major_axis</td><td>Uncertainty in semi-major axis</td></tr>
+                              <tr><td>sigma_q</td><td>uncertainty_perihelion_distance</td><td>Uncertainty in perihelion distance</td></tr>
+                              <tr><td>sigma_i</td><td>uncertainty_orbital_inclination</td><td>Uncertainty in orbital inclination</td></tr>
+                              <tr><td>sigma_ad</td><td>uncertainty_aphelion_distance</td><td>Uncertainty in aphelion distance</td></tr>
+                              <tr><td>sigma_n</td><td>uncertainty_mean_motion</td><td>Uncertainty in mean motion</td></tr>
+                              <tr><td>sigma_per</td><td>uncertainty_orbital_period</td><td>Uncertainty in orbital period</td></tr>
+                              <tr><td>albedo</td><td>surface_reflectivity</td><td>Albedo - surface brightness/reflectivity</td></tr>
+                              <tr><td>diameter</td><td>diameter_km</td><td>Estimated diameter in kilometers</td></tr>
+                              <tr><td>diameter_sigma</td><td>diameter_uncertainty_km</td><td>Uncertainty in diameter estimation</td></tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  <p>Download the cleaned dataset used for PCA analysis: 
+                      <a href="pca_ready_data.csv" download>pca_ready_data.csv</a>
+                  </p>
+                  <img src="images/pca_data_sample.png" alt="PCA Data Sample Heatmap" class="image fit">
+              </section>
+              <section>
+                <h3>Dataset Used for PCA</h3>
+                <p>The dataset below consists of selected asteroid parameters used for PCA. Scroll horizontally to explore all the columns.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>orbital_eccentricity</th>
+                                <th>semi_major_axis_au</th>
+                                <th>perihelion_distance_au</th>
+                                <th>orbital_inclination_deg</th>
+                                <th>aphelion_distance_au</th>
+                                <th>mean_motion_deg_day</th>
+                                <th>orbital_period_days</th>
+                                <th>orbital_period_years</th>
+                                <th>earth_moid_au</th>
+                                <th>uncertainty_eccentricity</th>
+                                <th>uncertainty_semi_major_axis</th>
+                                <th>uncertainty_perihelion_distance</th>
+                                <th>uncertainty_orbital_inclination</th>
+                                <th>uncertainty_aphelion_distance</th>
+                                <th>surface_reflectivity</th>
+                                <th>diameter_km</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0.122053</td><td>2.194870</td><td>1.926980</td><td>4.511842</td><td>2.462760</td><td>0.303103</td><td>1187.713307</td><td>3.251782</td><td>0.915786</td><td>3.46e-08</td><td>5.56e-09</td><td>7.68e-08</td><td>4.00e-06</td><td>6.24e-09</td><td>0.170000</td><td>12.467000</td></tr>
+                            <tr><td>0.106437</td><td>2.663625</td><td>2.380116</td><td>12.930272</td><td>2.947133</td><td>0.226722</td><td>1587.844633</td><td>4.347282</td><td>1.400960</td><td>4.55e-08</td><td>1.19e-08</td><td>1.21e-07</td><td>5.00e-06</td><td>1.32e-08</td><td>0.138000</td><td>12.394000</td></tr>
+                            <tr><td>0.546558</td><td>2.638602</td><td>1.196452</td><td>11.567485</td><td>4.080752</td><td>0.229955</td><td>1565.522356</td><td>4.286167</td><td>0.203482</td><td>2.18e-08</td><td>2.53e-09</td><td>5.81e-08</td><td>3.00e-06</td><td>3.91e-09</td><td>0.145937</td><td>7.581494</td></tr>
+                            <tr><td>0.250901</td><td>2.454535</td><td>1.838690</td><td>11.712441</td><td>3.070380</td><td>0.256301</td><td>1404.598964</td><td>3.845582</td><td>0.855046</td><td>5.33e-08</td><td>9.92e-09</td><td>1.27e-07</td><td>5.00e-06</td><td>1.24e-08</td><td>0.103000</td><td>9.492000</td></tr>
+                            <tr><td>0.088027</td><td>2.253746</td><td>2.055355</td><td>4.257149</td><td>2.452137</td><td>0.291304</td><td>1235.821636</td><td>3.383495</td><td>1.072540</td><td>2.94e-08</td><td>5.57e-09</td><td>6.58e-08</td><td>3.00e-06</td><td>6.06e-09</td><td>0.160000</td><td>5.887000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
+            
+            <section>
+              <h3>Data Normalization for PCA</h3>
+              <p>Normalization is a crucial preprocessing step in PCA to ensure that all variables contribute equally to the analysis. Since different parameters in our asteroid dataset have different scales (e.g., orbital distance in AU, inclination in degrees, reflectivity in percentages), we apply <strong>StandardScaler</strong> from scikit-learn. This scales each feature to have a mean of 0 and a standard deviation of 1, preventing variables with larger ranges from dominating the principal components.</p>
+              <p>The table below presents the <strong>normalized asteroid dataset</strong> used for PCA, where each column is now standardized.</p>
+          
+              <div class="table-container">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>orbital_eccentricity</th>
+                              <th>semi_major_axis_au</th>
+                              <th>perihelion_distance_au</th>
+                              <th>orbital_inclination_deg</th>
+                              <th>aphelion_distance_au</th>
+                              <th>mean_motion_deg_day</th>
+                              <th>orbital_period_days</th>
+                              <th>orbital_period_years</th>
+                              <th>earth_moid_au</th>
+                              <th>uncertainty_eccentricity</th>
+                              <th>uncertainty_semi_major_axis</th>
+                              <th>uncertainty_perihelion_distance</th>
+                              <th>uncertainty_orbital_inclination</th>
+                              <th>uncertainty_aphelion_distance</th>
+                              <th>surface_reflectivity</th>
+                              <th>diameter_km</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr><td>-0.291087</td><td>-2.397732</td><td>-1.500222</td><td>-0.918714</td><td>-2.269374</td><td>2.826904</td><td>-2.311403</td><td>-2.311403</td><td>-1.606950</td><td>-0.002863</td><td>-0.01163</td><td>-0.003369</td><td>-0.005573</td><td>-0.01805</td><td>2.176784</td><td>3.972760</td></tr>
+                          <tr><td>-0.487774</td><td>-0.760093</td><td>-0.241623</td><td>0.417490</td><td>-0.949011</td><td>0.610152</td><td>-0.783430</td><td>-0.783430</td><td>-0.237642</td><td>-0.002863</td><td>-0.01163</td><td>-0.003369</td><td>-0.005573</td><td>-0.01805</td><td>1.302616</td><td>3.941431</td></tr>
+                          <tr><td>5.055819</td><td>-0.847513</td><td>-3.529286</td><td>0.201183</td><td>2.141142</td><td>0.703975</td><td>-0.868671</td><td>-0.868671</td><td>-3.617286</td><td>-0.002863</td><td>-0.01163</td><td>-0.003369</td><td>-0.005573</td><td>-0.01805</td><td>1.519439</td><td>1.876129</td></tr>
+                          <tr><td>1.331832</td><td>-1.490567</td><td>-1.745449</td><td>0.224191</td><td>-0.613050</td><td>1.468588</td><td>-1.483186</td><td>-1.483186</td><td>-1.778376</td><td>-0.002863</td><td>-0.01163</td><td>-0.003369</td><td>-0.005573</td><td>-0.01805</td><td>0.346496</td><td>2.696029</td></tr>
+                          <tr><td>-0.719657</td><td>-2.192044</td><td>-1.143658</td><td>-0.959140</td><td>-2.298331</td><td>2.484462</td><td>-2.127693</td><td>-2.127693</td><td>-1.164543</td><td>-0.002863</td><td>-0.01163</td><td>-0.003369</td><td>-0.005573</td><td>-0.01805</td><td>1.903607</td><td>1.148932</td></tr>
+                      </tbody>
+                  </table>
+              </div>
+          </section>
+          
+          
+              <!-- PCA Transformations -->
+              <section>
+                  <h3>PCA Transformation & Visualization</h3>
+                  <p>
+                      After preprocessing, we applied PCA with different component settings to analyze the variance retained. Below are 
+                      the 2D and 3D projections of our asteroid dataset using PCA:
+                  </p>
+                  <img src="images/PCA_2D_projection.png" alt="PCA 2D Projection" style="width: 500px;">
+                  <img src="images/PCA_3D_projection.png" alt="PCA 3D Projection" style="width: 500px;">
+              </section>
+          
+              <!-- Variance Explained -->
+              <section>
+                  <h3>Variance Explained by PCA</h3>
+                  <p>
+                      We computed how much variance remains after reducing the dataset dimensions. The results are as follows:
+                  </p>
+                  <ul>
+                      <li>Variance retained in 2D PCA: <strong>70.89%</strong></li>
+                      <li>Variance retained in 3D PCA: <strong>84.18%</strong></li>
+                  </ul>
+                  <p>We also computed the minimum number of components needed to retain at least 95% variance in the data:</p>
+                  <ul>
+                      <li><strong>Number of components required to retain 95% variance</strong>: <strong>5</strong></li>
+                  </ul>
+                  <img src="images/pca_variance_plot.png" alt="PCA Variance Explained" style="width: 500px;">
+              </section>
+              <section>
+                <h3>Feature Contributions to Principal Components</h3>
+                <p>
+                  Each principal component (PC) is a linear combination of our original features. The bar charts below show 
+                  how much each feature contributes to each principal component. A positive or negative bar indicates the 
+                  direction and magnitude of that feature's influence on the component.
+                </p>
+              
+                <p>
+                  <strong>Interpretation:</strong>
+                  <ul>
+                    <li>A large positive bar means that increasing that feature will increase the principal component's value.</li>
+                    <li>A large negative bar indicates that increasing that feature will decrease the principal component's value.</li>
+                    <li>Features with bars near zero have less influence on that particular component.</li>
+                  </ul>
+                </p>
+              
+                <!-- PC1 Chart -->
+                <div class="chart-container">
+                  <h4>Principal Component 1 (PC1)</h4>
+                  <p>
+                    PC1 captures the largest variance in our asteroid dataset. 
+                    If a feature bar is large (positively or negatively), that feature heavily influences PC1.
+                  </p>
+                  <img src="images/pca_feature_importance_pc1.png" alt="Feature Importance in PC1" style="width: 800px;">
+                </div>
+              
+                <!-- PC2 Chart -->
+                <div class="chart-container">
+                  <h4>Principal Component 2 (PC2)</h4>
+                  <p>
+                    PC2 is orthogonal to PC1 and captures the next largest chunk of variance.
+                    Different features may stand out here, indicating they are more relevant to the second pattern of variation in the data.
+                  </p>
+                  <img src="images/pca_feature_importance_pc2.png" alt="Feature Importance in PC2" style="width: 800px;">
+                </div>
+              
+                <!-- PC3 Chart -->
+                <div class="chart-container">
+                  <h4>Principal Component 3 (PC3)</h4>
+                  <p>
+                    PC3 captures additional variance after PC1 and PC2. Large bars here show which features become more relevant 
+                    once the first two major patterns of variance have been accounted for.
+                  </p>
+                  <img src="images/pca_feature_importance_pc3.png" alt="Feature Importance in PC3" style="width: 800px;">
+                </div>
+              </section>
+              
+          
+              <!-- Eigenvalues -->
+              <section>
+                  <h3>Top Eigenvalues</h3>
+                  <p>
+                      The eigenvalues of PCA indicate the importance of each principal component. The top three eigenvalues from our PCA analysis are:
+                  </p>
+                  <ul>
+                      <li><strong>1st Eigenvalue</strong>: <strong>6.40</strong></li>
+                      <li><strong>2nd Eigenvalue</strong>: <strong>4.94</strong></li>
+                      <li><strong>3rd Eigenvalue</strong>: <strong>2.12</strong></li>
+                  </ul>
+                  <img src="images/pca_eigenvalues.png" alt="Top PCA Eigenvalues" style="width: 500px;">
+              </section>
+          </section>
+          
 
             <!-- Clustering Section -->
             <section id="clustering" class="model-section">
-                <h2>Clustering</h2>
-                <p>Clustering groups asteroids based on their trajectory, size, velocity, and orbit.</p>
-                <img src="images/clustering_results.png" alt="Clustering Results" class="image fit">
+                <h2>Clustering Analysis</h2>
+
+                <p>
+                    Clustering is an <strong>unsupervised machine learning technique</strong> used to group data points based on their similarities. In this project, clustering helps identify **patterns in asteroid trajectories**, allowing for **early detection of potential collision risks**.
+                </p>
+                
+                <h3>Types of Clustering Methods</h3>
+                
+                <p>We explored <strong>three clustering methods</strong>: <strong>K-Means</strong>, <strong>Hierarchical Clustering</strong>, and <strong>DBSCAN</strong>. Each method provides unique insights into asteroid movement patterns.</p>
+                
+                <h4>K-Means Clustering</h4>
+                <ul>
+                    <li><strong>Partition-based method:</strong> Divides asteroids into <em>k</em> clusters based on trajectory features like velocity and distance.</li>
+                    <li><strong>Distance metric:</strong> Uses <em>Euclidean distance</em> to assign points to clusters.</li>
+                    <li><strong>Strengths:</strong> Efficient for large datasets, useful for identifying asteroid groups with similar motion.</li>
+                    <li><strong>Weaknesses:</strong> Assumes clusters are spherical, struggles with irregular asteroid paths.</li>
+                </ul>
+                
+                <h4>Hierarchical Clustering</h4>
+                <ul>
+                    <li><strong>Tree-based method:</strong> Builds a hierarchical representation of asteroid clusters.</li>
+                    <li><strong>Distance metric:</strong> Uses <strong>various metrics</strong> (Euclidean, Manhattan) to form clusters.</li>
+                    <li><strong>Strengths:</strong> No need to predefine the number of clusters, useful for detecting nested asteroid groups.</li>
+                    <li><strong>Weaknesses:</strong> Computationally expensive for large asteroid datasets.</li>
+                </ul>
+                
+                <h4>DBSCAN (Density-Based Clustering)</h4>
+                <ul>
+                    <li><strong>Density-based method:</strong> Identifies asteroid clusters based on density.</li>
+                    <li><strong>Distance metric:</strong> Uses <strong>epsilon (ε) radius</strong> and <strong>minimum points (minPts)</strong> for clustering.</li>
+                    <li><strong>Strengths:</strong> Detects asteroid clusters of <strong>arbitrary shapes</strong> and is <strong>robust to noise</strong> (e.g., outliers or erratic asteroids).</li>
+                    <li><strong>Weaknesses:</strong> Requires careful tuning of ε and minPts to balance detection accuracy.</li>
+                </ul>
+                
+                <h3>Clustering in Asteroid Collision Prediction</h3>
+                
+                <p>
+                    In our <strong>Asteroid Collision Prediction</strong> project, clustering is crucial for:
+                </p>
+                <ul>
+                    <li>Grouping asteroids with <strong>similar trajectories</strong>.</li>
+                    <li>Identifying <strong>high-risk asteroid clusters</strong> that may pose collision threats.</li>
+                    <li>Analyzing patterns in <strong>historical asteroid paths</strong> to predict future behavior.</li>
+                </ul>
+                
+                <h3>Clustering & Distance Metrics Visualization</h3>
+                
+                <p>Below are visual representations of clustering techniques and their working principles:</p>
+                
+                <!-- Placeholder for Image 1 -->
+                <img src="images/Clustering_techniques.png" alt="Comparison of clustering techniques" width="500">
+                
+                <!-- Placeholder for Image 2 -->
+                <img src="images/distance_metrics_clustering.png" alt="Distance metrics in clustering" width="500">
+                
+            
+                <!-- Comparison of Clustering Algorithms -->
+                <section>
+                    <h3>Comparison of Clustering Methods</h3>
+                    <p>
+                        <strong>K-Means:</strong> A partition-based clustering method that requires defining the number of clusters <strong>k</strong>) beforehand. It works best with spherical clusters.
+                    </p>
+                    <p>
+                        <strong>Hierarchical Clustering:</strong> Builds a <strong>tree-like structure (dendrogram)</strong> that helps visualize how data points merge. It does not require specifying k but is computationally expensive.
+                    </p>
+                    <p>
+                        <strong>DBSCAN:</strong> A density-based clustering algorithm that groups together points in <strong>high-density regions**</strong> while marking outliers. It does not require k but is sensitive to hyperparameters.
+                    </p>
+                    <img src="images/clustering_comparison.png" alt="Comparison of Clustering Methods" class="image fit">
+                </section>
+            
+                <!-- Data Preparation -->
+                <section>
+                    <h3>Data Preparation for Clustering</h3>
+                    <p>
+                        Before applying clustering techniques, we ensured that our dataset was properly preprocessed.
+                        This involved several key steps, including removing labels, selecting quantitative features, standardizing the data, and applying PCA.
+                        Below, we detail each step and provide sample data for better understanding.
+                    </p>
+                
+                    <!-- Removed Labels -->
+                    <h4>1. Removed Labels</h4>
+                    <p>
+                        Since clustering is an <strong>unsupervised learning method</strong>, we must ensure that the model does not have access to any predefined labels.
+                        The asteroid class labels (e.g., <strong>MBA</strong>, <strong>OMB</strong>, etc.) were removed and stored separately.
+                        These labels were later used for <strong>evaluating the clustering performance</strong>.
+                    </p>
+                
+                    <!-- Selected Quantitative Features -->
+                    <h4>2. Selected Quantitative Features</h4>
+                    <p>
+                        Clustering algorithms require <strong>only numerical data</strong> for processing. Our original dataset contained categorical and textual features, such as:
+                    </p>
+                    <ul>
+                        <li>Asteroid Class (Categorical: MBA, OMB, MCA, etc.)</li>
+                        <li>Asteroid Name (Text)</li>
+                        <li>Boolean Features (Near-Earth Object, Potentially Hazardous)</li>
+                    </ul>
+                    <p>
+                        We removed all non-numeric columns and retained only <strong>orbital, physical, and uncertainty parameters</strong>.
+                        The selected features included parameters such as <strong>orbital eccentricity</strong>, <strong>semi-major axis</strong>, <strong>perihelion distance</strong>, and <strong>mean motion</strong>.
+                    </p>
+                
+                    <!-- Standardized Data -->
+                    <h4>3. Standardized Data</h4>
+                    <p>
+                        Since different asteroid parameters are measured in different units (e.g., distances in AU, angles in degrees),
+                        features with larger numerical values might dominate the clustering process.
+                        To ensure equal contribution of all features we applied <strong>Standardization</strong> using <code>StandardScaler</code>.
+                        This transformed the data so that each feature had:
+                    </p>
+                    <ul>
+                        <li>A <strong>mean of 0</strong></li>
+                        <li>A <strong>standard deviation of 1</strong></li>
+                    </ul>
+                    <p>
+                        Below is a sample of the <strong>standardized dataset</strong>, where all features have been normalized:
+                    </p>
+                
+                    <!-- Horizontally Scrollable Table for Standardized Data -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>orbital_eccentricity</th>
+                                    <th>semi_major_axis_au</th>
+                                    <th>perihelion_distance_au</th>
+                                    <th>orbital_inclination_deg</th>
+                                    <th>aphelion_distance_au</th>
+                                    <th>mean_motion_deg_day</th>
+                                    <th>orbital_period_days</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>-0.291087</td><td>-2.397732</td><td>-1.500222</td><td>-0.918714</td><td>-2.269374</td><td>2.826904</td><td>-2.311403</td></tr>
+                                <tr><td>-0.487774</td><td>-0.760093</td><td>-0.241623</td><td>0.417490</td><td>-0.949011</td><td>0.610152</td><td>-0.783430</td></tr>
+                                <tr><td>5.055819</td><td>-0.847513</td><td>-3.529286</td><td>0.201183</td><td>2.141142</td><td>0.703975</td><td>-0.868671</td></tr>
+                                <tr><td>1.331832</td><td>-1.490567</td><td>-1.745449</td><td>0.224191</td><td>-0.613050</td><td>1.468588</td><td>-1.483186</td></tr>
+                                <tr><td>-0.719657</td><td>-2.192044</td><td>-1.143658</td><td>-0.959140</td><td>-2.298331</td><td>2.484462</td><td>-2.127693</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- Applied PCA -->
+                    <h4>4. Applied PCA</h4>
+                    <p>
+                        To improve efficiency and <strong>reduce dimensionality</strong>, we applied <strong>Principal Component Analysis (PCA)</strong>.
+                        This transformation captures the <strong>most important variance</strong> in the dataset while reducing the number of features.
+                    </p>
+                    <p>
+                        After analyzing the cumulative variance, we determined that using <strong>15 principal components</strong> retained <strong>95% of the original information</strong>.
+                        Below is a <strong>3D representation of the first three principal components</strong>:
+                    </p>
+                
+                    <!-- Horizontally Scrollable Table for PCA Data -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PC1</th>
+                                    <th>PC2</th>
+                                    <th>PC3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0.526965</td><td>0.213948</td><td>-0.390357</td></tr>
+                                <tr><td>-3.833093</td><td>-2.467820</td><td>0.234145</td></tr>
+                                <tr><td>2.129572</td><td>0.478243</td><td>0.822292</td></tr>
+                                <tr><td>2.212791</td><td>1.281751</td><td>-0.548062</td></tr>
+                                <tr><td>-3.848243</td><td>-2.446318</td><td>0.422501</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Download Processed Data -->
+                    <p>Download the full processed dataset used for clustering: 
+                        <a href="pca_clustering_data.csv" download>pca_clustering_data.csv</a>
+                    </p>
+                
+                    <!-- Link to GitHub -->
+                    <p>
+                        <strong>Full Code Available:</strong> You can find the complete preprocessing and clustering implementation in my 
+                        <a href="https://github.com/YOUR_GITHUB_REPO" target="_blank"><strong>GitHub Repository</strong></a>.
+                    </p>
+                </section>
+                
+            
+                <!-- K-Means Clustering -->
+                <section>
+                    <h3>K-Means Clustering</h3>
+                    <p>
+                        <strong>K-Means</strong> is a widely used clustering algorithm that partitions data into <strong>k clusters</strong> based on similarity.
+                        Selecting the optimal number of clusters (<strong>k</strong>) is crucial, and we used <strong>Silhouette Analysis</strong> to determine the best value.
+                    </p>
+                
+                    <h4>Step 1: Apply PCA for Dimensionality Reduction</h4>
+                    <p>
+                        Before clustering, we reduced the dataset's dimensionality using <strong>Principal Component Analysis (PCA)</strong>.
+                        We found that <strong>15 principal components</strong> retained most of the variance while keeping computation efficient.
+                    </p>
+                
+                    <h4>Step 2: Determine Optimal k using Silhouette Analysis</h4>
+                    <p>
+                        To find the best number of clusters, we tested different values of <strong>k</strong> and calculated their <strong>Silhouette Scores</strong>.
+                        The plot below shows that <strong>k=5</strong> provides the best clustering structure.
+                    </p>
+                    <img src="images/silhouette_analysis.png" alt="Silhouette Analysis for K" style="width: 500px;">
+                
+                    <h4>Step 3: Perform Clustering</h4>
+                    <p>
+                        Using the optimal <strong>k=5</strong>, we ran <strong>K-Means</strong> on the PCA-transformed dataset.
+                        The clustering results show distinct asteroid groups, with red markers indicating the cluster centroids.
+                    </p>
+                    <img src="images/kmeans_clustering.png" alt="K-Means Clustering" style="width: 1000px;">
+                
+                    <p>
+                        📌 <a href="https://github.com/YOUR_GITHUB_REPO" target="_blank"><strong>View Full K-Means Implementation on GitHub</strong></a>
+                    </p>
+                </section>
+                
+
+                <!-- Hierarchical Clustering -->
+                <section>
+                    <h3>Hierarchical Clustering</h3>
+                    <p>
+                        Unlike <strong>K-Means</strong>, <strong>Hierarchical Clustering</strong> builds a tree-like structure (dendrogram) that helps visualize relationships between asteroid groups.
+                        It does not require specifying the number of clusters beforehand.
+                    </p>
+
+                    <h4>Step 1: Create a Dendrogram</h4>
+                    <p>
+                        The <strong>dendrogram</strong> below shows how asteroids cluster together based on similarity. 
+                        By cutting the dendrogram at an appropriate level, we identified <strong>5 distinct clusters</strong>.
+                    </p>
+                    <img src="images/hierarchical_dendrogram.png" alt="Hierarchical Clustering Dendrogram" class="image fit">
+
+                    <h4>Step 2: Extract and Visualize Clusters</h4>
+                    <p>
+                        After determining the optimal number of clusters, we plotted the final clusters.
+                    </p>
+                    <img src="images/hierarchical_clustering.png" alt="Hierarchical Clustering" class="image fit">
+
+                    <p>
+                        📌 <a href="https://github.com/YOUR_GITHUB_REPO" target="_blank"><strong>View Full Hierarchical Clustering Implementation on GitHub</strong></a>
+                    </p>
+                </section>
+
+                <!-- DBSCAN Clustering -->
+                <section>
+                    <h3>DBSCAN Clustering</h3>
+                    <p>
+                        Unlike <strong>K-Means</strong> and <strong>Hierarchical Clustering</strong>, <strong>DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</strong> 
+                        identifies clusters based on data density, making it effective for detecting <strong>irregularly shaped clusters</strong> and <strong>outliers</strong>.
+                    </p>
+
+                    <h4>Step 1: Define Parameters</h4>
+                    <p>
+                        <strong>DBSCAN</strong> requires defining two key parameters:
+                    </p>
+                    <ul>
+                        <li><strong>ε (epsilon)</strong> - Defines the neighborhood size for grouping points.</li>
+                        <li><strong>min_samples</strong> - Minimum number of points required to form a cluster.</li>
+                    </ul>
+
+                    <h4>Step 2: Apply DBSCAN Clustering</h4>
+                    <p>
+                        After tuning <strong>ε</strong> and <strong>min_samples</strong>, we found <strong>33 unique clusters</strong>, including noise points (marked as <code>-1</code> in the plot below).
+                    </p>
+                    <img src="images/dbscan_clustering.png" alt="DBSCAN Clustering" class="image fit">
+
+                    <p>
+                        📌 <a href="https://github.com/YOUR_GITHUB_REPO" target="_blank"><strong>View Full DBSCAN Implementation on GitHub</strong></a>
+                    </p>
+                </section>
+
+
+            <!-- Clustering Evaluation -->
+            <section>
+                <h3>Clustering Evaluation</h3>
+                <p>
+                    To assess the performance of each clustering technique, we compared their predicted clusters to the <strong>true asteroid classes</strong> using confusion matrices.
+                </p>
+                <img src="images/kmeans_confusion_matrix.png" alt="K-Means vs True Labels" style="width: 500px;">
+                <img src="images/hierarchical_confusion_matrix.png" alt="Hierarchical vs True Labels" style="width: 500px;">
+                <img src="images/dbscan_confusion_matrix.png" alt="DBSCAN vs True Labels" style="width: 700px;">
+
+                <h4>Cluster Purity Scores</h4>
+                <p>
+                    The <strong>Cluster Purity Score</strong> measures how well each predicted cluster aligns with known asteroid categories.
+                    Our results show that all three clustering methods achieved <strong>93.4% purity</strong>.
+                </p>
+                <ul>
+                    <li><strong>K-Means Purity:</strong> 93.4%</li>
+                    <li><strong>Hierarchical Purity:</strong> 93.4%</li>
+                    <li><strong>DBSCAN Purity:</strong> 93.4%</li>
+                </ul>
             </section>
+
+
+                
+
+            
+                <!-- Conclusion -->
+                <section>
+                    <h3>Conclusion</h3>
+                    <p>
+                        Clustering helped us group asteroids based on <strong>orbital and physical properties</strong>. Key findings include:
+                    </p>
+                    <ul>
+                        <li><strong>K-Means & Hierarchical clustering performed well</strong>, with clusters matching asteroid classes.</li>
+                        <li><strong>DBSCAN identified more nuanced structures</strong>, revealing outliers and noise points.</li>
+                        <li><strong>Silhouette analysis helped choose optimal k</strong>, avoiding random guesses.</li>
+                    </ul>
+                    <p>
+                        Clustering provides valuable insights into asteroid classification, which could help in <strong>predicting asteroid trajectories and potential impact risks</strong>.
+                    </p>
+                </section>
+            </section>
+            
 
             <!-- Association Rule Mining Section -->
             <section id="arm" class="model-section">
-                <h2>Association Rule Mining (ARM)</h2>
-                <p>ARM finds relationships between asteroid properties and collision risks.</p>
-                <img src="images/arm_results.png" alt="ARM Results" class="image fit">
+              <h2>Association Rule Mining (ARM)</h2>
+              <p>
+                Association Rule Mining (ARM) is a data mining technique aimed at uncovering interesting relationships, patterns, and associations within large datasets. It is widely used in various domains, such as market basket analysis, to identify sets of items that frequently co-occur in transactions.​ ARM relies on three key metrics to evaluate the strength of association rules:
+              </p>
+              <ul>
+                  <li><strong>Support</strong>: The proportion of transactions in which a given rule holds true.</li>
+                  <li><strong>Confidence</strong>: The probability that the rule's consequent is true given that the antecedent is true.</li>
+                  <li><strong>Lift</strong>: The strength of an association rule relative to its expected probability.</li>
+              </ul>
+              <h2>Association Rules</h2>
+              <p>
+                An association rule is an implication of the form {A} → {B}, where A and B are disjoint itemsets. The rule suggests that the presence of itemset A in a transaction implies the presence of itemset B. The strength and significance of such rules are evaluated using the measures of support, confidence, and lift.
+              </p>
+              <h2>The Apriori Algorithm</h2>
+              <p>
+                The Apriori algorithm is a foundational method in ARM, designed to identify frequent itemsets in large datasets and subsequently generate association rules. It operates on the principle that all non-empty subsets of a frequent itemset must also be frequent. This property allows the algorithm to efficiently prune the search space by eliminating itemsets that do not meet the minimum support threshold.​
+              </p>
+              <h2>How the Apriori Algorithm works:</h2>
+              <li><strong>Identify Frequent Individual Items:</strong> The algorithm begins by scanning the dataset to determine the support of individual items and identifies those that meet or exceed the minimum support threshold.​</li>
+              <li><strong>Generate Candidate Itemsets:</strong>Using the frequent individual items, the algorithm generates candidate itemsets of length two and calculates their support.​</li>
+              <li><strong>Repeat Iteratively:</strong>Steps 2 and 3 are repeated, increasing the length of the itemsets by one in each iteration, until no more frequent itemsets are found.​</li>
+              <li><strong>Generate Association Rules:</strong>From the frequent itemsets identified, the algorithm generates association rules and computes their confidence and lift to assess their significance.​</li>
+
+              <img src="images/arm_formulas.png" alt="arm_formulas" style="width: 500px;">
+              <img src="images/arm_formula_2.ppm" alt="arm_formulas" style="width: 500px;">
+
+              <p>These images provide a visual representation of the key metrics used in ARM and the step-by-step process of the Apriori algorithm, respectively.​</p>
+              
+          <br>
+              <p>
+                  In this study, we used the <strong>Apriori Algorithm</strong> to identify associations between asteroid classification, size, 
+                  and orbit-related parameters.
+              </p>
+
+              <!-- Data Preparation -->
+              <section>
+                <h3>Data Preprocessing for ARM</h3>
+                <p>
+                    Before applying the Apriori algorithm, it was necessary to <strong>clean and transform</strong> the dataset into a categorical format. 
+                    Since ARM works best with transaction-style data, we performed the following preprocessing steps:
+                </p>
+            
+                <h4>Handling Categorical Variables</h4>
+                <p>
+                    The dataset contained categorical values in different formats, including boolean values (`True/False`) and inconsistent 
+                    string representations (`'TRUE', 'FALSE', 'N'`). These values were converted to a <strong>binary format</strong> (0 = Non-Hazardous, 
+                    1 = Hazardous) for better consistency.
+                </p>
+                
+                <pre><code>
+                # Standardizing 'potentially_hazardous' column
+                df["potentially_hazardous"] = df["potentially_hazardous"].astype(str).str.upper()
+            
+                # Define mapping
+                hazardous_mapping = { "TRUE": 1, "FALSE": 0, "N": 0 }
+            
+                # Apply mapping
+                df["potentially_hazardous"] = df["potentially_hazardous"].map(hazardous_mapping).astype(int)
+            
+                # Convert boolean to integer
+                df["near_earth_object"] = df["near_earth_object"].astype(int)
+                </code></pre>
+            
+                <h4>Feature Binning for Transactional Data</h4>
+                <p>
+                    ARM requires categorical features. To transform continuous numerical values into categories, we used <strong>quantile binning (qcut)</strong> 
+                    to divide `semi_major_axis_au` and `diameter_km` into three categories: <strong>Small, Medium, and Large</strong>.
+                </p>
+            
+                <pre><code>
+                # Categorizing numerical values into discrete bins
+                df["Orbit_Category"] = pd.qcut(df["semi_major_axis_au"], q=3, labels=[0,1,2])
+                df["Size_Category"] = pd.qcut(df["diameter_km"], q=3, labels=[0,1,2])
+                </code></pre>
+            
+                <h4>Preprocessed Sample Data</h4>
+                <p>
+                    After preprocessing, the dataset looked as follows:
+                </p>
+            
+                <div class="table-container">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>near_earth_object</th>
+                              <th>potentially_hazardous</th>
+                              <th>asteroid_class_AMO</th>
+                              <th>asteroid_class_APO</th>
+                              <th>asteroid_class_IMB</th>
+                              <th>asteroid_class_MBA</th>
+                              <th>asteroid_class_MCA</th>
+                              <th>asteroid_class_OMB</th>
+                              <th>Orbit_Category_0</th>
+                              <th>Orbit_Category_1</th>
+                              <th>Orbit_Category_2</th>
+                              <th>Size_Category_0</th>
+                              <th>Size_Category_1</th>
+                              <th>Size_Category_2</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                          <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                      </tbody>
+                  </table>
+              </div>
+            
+                <p>
+                    These modifications ensured that the dataset was in the correct format for <strong>ARM analysis</strong>, allowing the Apriori algorithm 
+                    to identify meaningful relationships between asteroid attributes.
+                </p>
             </section>
+            
+          
+              <!-- Code Implementation -->
+              <section>
+                  <h3>Code Implementation</h3>
+                  <p>
+                      We used <strong>Python</strong> and the <strong>mlxtend</strong> library to apply the Apriori algorithm. The code processes the dataset, applies 
+                      one-hot encoding, and generates association rules based on <strong>support, confidence, and lift thresholds</strong>.
+                  </p>
+                  <p>
+                      View the full implementation:
+                      <a href=https://github.com/Mihirchauhan0709/ml-project download>ARM_Code.ipynb</a>
+                  </p>
+              </section>
+          
+              <!-- Results -->
+              <section>
+                <h3>Association Rule Mining (ARM) Results</h3>
+                <p>
+                    After applying the <strong>Apriori algorithm</strong>, we extracted the top 15 association rules based on 
+                    various metrics, including <strong>support, confidence, lift, and conviction</strong>.
+                </p>
+            
+                <h4>Understanding the Metrics</h4>
+                <ul>
+                    <li><strong>Support:</strong> Frequency of the rule occurring in the dataset.</li>
+                    <li><strong>Confidence:</strong> Probability that the consequent occurs given the antecedent.</li>
+                    <li><strong>Lift:</strong> Measure of how much more likely the consequent is given the antecedent, compared to random chance.</li>
+                    <li><strong>Leverage:</strong> Difference between observed and expected frequency of rule occurrence.</li>
+                    <li><strong>Conviction:</strong> Measure of rule reliability (higher values indicate stronger associations).</li>
+                    <li><strong>Jaccard:</strong> Measures the similarity between the antecedent and consequent sets.</li>
+                    <li><strong>Kulczynski:</strong> Measures the balance between confidence of A → B and B → A.</li>
+                </ul>
+            
+                <h4>Top 15 Association Rules</h4>
+                <p>
+                    The table below presents the top 15 rules discovered using <strong>ARM</strong>. Scroll horizontally to explore all the metrics.
+                </p>
+            
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Antecedents</th>
+                                <th>Consequents</th>
+                                <th>Antecedent Support</th>
+                                <th>Consequent Support</th>
+                                <th>Support</th>
+                                <th>Confidence</th>
+                                <th>Lift</th>
+                                <th>Leverage</th>
+                                <th>Conviction</th>
+                                <th>Jaccard</th>
+                                <th>Kulczynski</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>(asteroid_class_OMB)</td>
+                                <td>(Orbit_Category_2, Size_Category_2)</td>
+                                <td>0.0560</td>
+                                <td>0.1487</td>
+                                <td>0.0303</td>
+                                <td>0.5414</td>
+                                <td>3.6411</td>
+                                <td>0.0220</td>
+                                <td>1.8564</td>
+                                <td>0.1739</td>
+                                <td>0.3727</td>
+                            </tr>
+                            <tr>
+                                <td>(Orbit_Category_2, Size_Category_2)</td>
+                                <td>(asteroid_class_OMB)</td>
+                                <td>0.1487</td>
+                                <td>0.0560</td>
+                                <td>0.0303</td>
+                                <td>0.2040</td>
+                                <td>3.6411</td>
+                                <td>0.0220</td>
+                                <td>1.1859</td>
+                                <td>0.8520</td>
+                                <td>0.3727</td>
+                            </tr>
+                            <tr>
+                                <td>(Size_Category_1, asteroid_class_OMB)</td>
+                                <td>(Orbit_Category_2)</td>
+                                <td>0.0160</td>
+                                <td>0.3333</td>
+                                <td>0.0160</td>
+                                <td>1.0000</td>
+                                <td>2.9999</td>
+                                <td>0.0106</td>
+                                <td>∞</td>
+                                <td>0.6775</td>
+                                <td>0.5240</td>
+                            </tr>
+                            <tr>
+                                <td>(asteroid_class_OMB)</td>
+                                <td>(Orbit_Category_2)</td>
+                                <td>0.0560</td>
+                                <td>0.3333</td>
+                                <td>0.0560</td>
+                                <td>1.0000</td>
+                                <td>2.9999</td>
+                                <td>0.0373</td>
+                                <td>∞</td>
+                                <td>0.7062</td>
+                                <td>0.5840</td>
+                            </tr>
+                            <tr>
+                                <td>(Size_Category_2, asteroid_class_OMB)</td>
+                                <td>(Orbit_Category_2)</td>
+                                <td>0.0303</td>
+                                <td>0.3333</td>
+                                <td>0.0303</td>
+                                <td>1.0000</td>
+                                <td>2.9999</td>
+                                <td>0.0202</td>
+                                <td>∞</td>
+                                <td>0.6875</td>
+                                <td>0.5455</td>
+                            </tr>
+                            <tr>
+                                <td>(Size_Category_2)</td>
+                                <td>(Orbit_Category_2)</td>
+                                <td>0.3333</td>
+                                <td>0.3333</td>
+                                <td>0.1487</td>
+                                <td>0.4461</td>
+                                <td>1.3383</td>
+                                <td>0.0375</td>
+                                <td>1.2036</td>
+                                <td>0.3791</td>
+                                <td>0.4461</td>
+                            </tr>
+                            <tr>
+                                <td>(asteroid_class_OMB)</td>
+                                <td>(Size_Category_2)</td>
+                                <td>0.0560</td>
+                                <td>0.3333</td>
+                                <td>0.0303</td>
+                                <td>0.5414</td>
+                                <td>1.6243</td>
+                                <td>0.0116</td>
+                                <td>1.4538</td>
+                                <td>0.4071</td>
+                                <td>0.3162</td>
+                            </tr>
+                            <tr>
+                                <td>(Orbit_Category_2)</td>
+                                <td>(Size_Category_2, asteroid_class_OMB)</td>
+                                <td>0.3333</td>
+                                <td>0.0303</td>
+                                <td>0.0303</td>
+                                <td>0.0910</td>
+                                <td>2.9999</td>
+                                <td>0.0202</td>
+                                <td>1.0667</td>
+                                <td>1.0000</td>
+                                <td>0.5455</td>
+                            </tr>
+                            <tr>
+                                <td>(Size_Category_2)</td>
+                                <td>(asteroid_class_OMB)</td>
+                                <td>0.3333</td>
+                                <td>0.0560</td>
+                                <td>0.0303</td>
+                                <td>0.0910</td>
+                                <td>1.6243</td>
+                                <td>0.0116</td>
+                                <td>1.0384</td>
+                                <td>0.5765</td>
+                                <td>0.3162</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <p>
+                    These association rules help in understanding patterns within the dataset. 
+                    For instance, certain asteroid classes are highly associated with specific orbit and size categories.
+                </p>
+            </section>
+            
+              <section>
+                  <h3>Results and Analysis</h3>
+                  <p>
+                      After running the <strong>Apriori algorithm</strong>, we obtained the <strong>top 15 association rules</strong> sorted by <strong>support, confidence, 
+                        and lift</strong>. Below is a tabular summary of the most relevant rules:
+                  </p>
+          
+                  <div class="table-container">
+                      <table>
+                          <thead>
+                              <tr>
+                                  <th>Antecedents</th>
+                                  <th>Consequents</th>
+                                  <th>Support</th>
+                                  <th>Confidence</th>
+                                  <th>Lift</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr><td>potentially_hazardous, near_earth_object</td><td>asteroid_class_APO</td><td>0.000523</td><td>0.946</td><td>563.51</td></tr>
+                              <tr><td>asteroid_class_APO</td><td>potentially_hazardous</td><td>0.000523</td><td>0.312</td><td>563.51</td></tr>
+                              <tr><td>asteroid_class_APO, near_earth_object</td><td>potentially_hazardous</td><td>0.000523</td><td>0.312</td><td>563.51</td></tr>
+                              <tr><td>near_earth_object, Orbit_Category_0</td><td>asteroid_class_APO</td><td>0.001505</td><td>0.689</td><td>416.34</td></tr>
+                              <tr><td>near_earth_object</td><td>asteroid_class_APO</td><td>0.001505</td><td>0.896</td><td>416.34</td></tr>
+                          </tbody>
+                      </table>
+                  </div>
+          
+                  <p>
+                      Below are two network visualizations of the discovered <strong>association rules</strong>. The first visualization shows the raw 
+                      relationships, while the second improved visualization highlights <strong>stronger relationships with labeled edges</strong>.
+                  </p>
+          
+                  <img src="images/arm_network_1.png" alt="ARM Network Graph" style="width: 800px;">
+                  <img src="images/arm_network_2.png" alt="Improved ARM Network Graph" style="width: 800px;">
+              </section>
+          
+              <!-- Conclusion -->
+              <section>
+                  <h3>Conclusion</h3>
+                  <p>
+                      Association Rule Mining helped uncover patterns in the asteroid dataset, highlighting relationships between key parameters. 
+                      The <strong>most significant findings</strong> include:
+                  </p>
+                  <ul>
+                      <li><strong>Near-Earth Objects (NEOs) are strongly associated with the Apollo asteroid class.</strong></li>
+                      <li><strong>Potentially hazardous asteroids tend to have lower perihelion distances and belong to specific orbit categories.</strong></li>
+                      <li><strong>Size and classification categories exhibit correlations, providing insights into asteroid groupings.</strong></li>
+                  </ul>
+                  <p>
+                      These findings could be useful in <strong>prioritizing asteroid tracking efforts</strong> and <strong>identifying potentially hazardous objects</strong> more efficiently.
+                  </p>
+              </section>
+          </section>
+          
         </div>
 
      <!-- Footer -->

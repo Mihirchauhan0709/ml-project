@@ -479,6 +479,57 @@
                 <p><strong>Figure 2:</strong> A snapshot of the cleaned dataset after handling missing values.</p>
             </div>
         </section>
+        <!-- Outlier Detection and Removal Section -->
+        <section>
+            <h3>Outlier Detection and Removal</h3>
+            <p>
+              Outliers are extreme values that can distort statistical analyses and machine learning models. 
+              Identifying and removing outliers ensures that our data is representative and avoids skewed results.
+            </p>
+
+            <h4>1. Identifying Outliers</h4>
+            <p>
+              Using the <strong>Interquartile Range (IQR) Method</strong>, we identified extreme values in key numerical attributes.
+              The boxplots below illustrate the presence of outliers before cleaning.
+            </p>
+            <div class="images">
+                <img src="images/outliers_before_cleaning.png" alt="Boxplots of Outliers Before Cleaning" width="850px" />
+                <p><strong>Figure 1:</strong> Boxplots showing outliers in numerical features before removal.</p>
+            </div>
+
+            <h4>2. Outlier Removal Strategy</h4>
+            <p>
+              We applied the **IQR method** to remove extreme outliers from key attributes such as:
+            </p>
+            <ul>
+              <li><strong>diameter_km</strong>: Some values were negative or unrealistically large.</li>
+              <li><strong>surface_reflectivity</strong>: Outliers affected brightness measurements.</li>
+              <li><strong>orbital_period_days</strong>: Some extreme values distorted orbital calculations.</li>
+              <li><strong>orbital_period_years</strong>: Long-period asteroids introduced inconsistencies.</li>
+            </ul>
+            <p>
+              After applying these filtering techniques, the cleaned dataset contained only statistically significant values.
+            </p>
+
+            <h4>3. Boxplots After Outlier Removal</h4>
+            <p>
+              The updated boxplots below show the distributions after removing extreme values, confirming a more balanced dataset.
+            </p>
+            <div class="images">
+                <img src="images/outliers_after_cleaning.png" alt="Boxplots After Outlier Removal" width="700px" />
+                <p><strong>Figure 2:</strong> Boxplots after outlier removal, showing improved data distributions.</p>
+            </div>
+
+            <h4>4. Summary of Outlier Removal</h4>
+            <p>
+              By removing extreme values, we achieved:
+            </p>
+            <ul>
+              <li>More **consistent** and **reliable** data.</li>
+              <li>Reduced **skewness** in key numerical features.</li>
+              <li>Improved **predictive accuracy** for machine learning models.</li>
+            </ul>
+
         
 
           <!-- Visualizations Section -->
