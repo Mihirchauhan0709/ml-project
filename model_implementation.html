@@ -15,6 +15,7 @@
     <script id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
+    
 
     <script defer src="assets/js/model_nav.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -111,6 +112,8 @@
                 <li><a href="#" class="model-link" data-target="naive-bayes">Naive Bayes</a></li>
                 <li><a href="#" class="model-link" data-target="decision-tree">Decision Tree</a></li>
                 <li><a href="#" class="model-link" data-target="regression">Regression</a></li>
+                <li><a href="#" class="model-link" data-target="svm">SVM</a></li>
+                <li><a href="#" class="model-link" data-target="random-forest">Randon Forest</a></li>
                 
                 
             </ul>
@@ -1706,7 +1709,7 @@
 
 
             <!-- Regression -->
-            <section id="regression" class="model-selection">
+            <section id="regression" class="model-section">
               <h2>Regression Models in Asteroid Hazard Prediction</h2>
 
 
@@ -1990,6 +1993,649 @@
                   <strong>Code Implementation:</strong> 
                   <a href="https://github.com/Mihirchauhan0709/ml-project/blob/main/Models/regression.ipynb" target="_blank">regression_models.ipynb</a>
                 </p>
+            </section>
+
+            <section id="svm" class="model-section">
+              <header>
+                <h2>Support Vector Machine (SVM) Overview</h2>
+              </header>
+            
+              <h3>What is Support Vector Machine (SVM)?</h3>
+              <p>
+                Support Vector Machines (SVMs) are powerful supervised learning algorithms that are primarily used for binary classification tasks. 
+                The central idea behind an SVM is to find a boundary — called a <strong>hyperplane</strong> — that best separates the two classes of data. 
+                What makes SVMs unique is that they do not just seek <em>any</em> separating line; rather, they find the line (or hyperplane) that 
+                <strong>maximizes the margin</strong> — the distance between the hyperplane and the nearest data points from either class. 
+                These nearest data points are called <strong>support vectors</strong>, and they are critical because they determine the position and orientation of the separating hyperplane.
+              </p>
+              <p>
+                SVMs are highly versatile because they can handle both linearly separable and non-linearly separable data. 
+                When data is linearly separable, SVMs find the best straight-line division. 
+                When data is not easily separable, SVMs can project data into a higher-dimensional space using a technique called the <strong>kernel trick</strong>, 
+                allowing a linear separator to exist in this new transformed space. 
+                This approach makes SVMs particularly effective in complex classification problems where other methods might struggle.
+              </p>
+              <p>
+                Additionally, SVMs are robust against overfitting, especially when the data has clear margins of separation. 
+                Through careful tuning of parameters like the <code>C</code> value (regularization parameter) and choosing appropriate kernel functions 
+                (such as linear, polynomial, or radial basis function (RBF)), SVMs can achieve high classification accuracy on both training and unseen data.
+              </p>
+              <p>
+                <img src="images/svm-margin.jpg" alt="SVM Margin" style="width: 700px; display: block; margin: auto;">
+              </p>
+              <p style="text-align: center;"><strong>Figure 1:</strong> SVM finds the hyperplane that maximizes the margin between two classes.</p>
+            
+              <h3>Why are SVMs Linear Separators?</h3>
+              <p>
+                At their core, SVMs are designed to find a <strong>linear separator</strong> between two classes of data points. 
+                A linear separator is a hyperplane that splits the feature space into two halves, with each half corresponding to a different class. 
+                Even when dealing with complex, nonlinear data distributions, SVMs fundamentally aim to create a linear boundary — but they do so 
+                <strong>in a higher-dimensional feature space</strong> where the data becomes linearly separable.
+              </p>
+              <p>
+                This is achieved through the use of <strong>kernel functions</strong>. A kernel function computes the dot product of two data points 
+                in a transformed space without explicitly mapping the data to that space. 
+                As a result, SVMs are able to operate in an extremely high-dimensional space (even infinite-dimensional, as with the RBF kernel) 
+                while still maintaining a computationally efficient model.
+              </p>
+              <p>
+                No matter the complexity of the transformation, the decision boundary produced by an SVM is always a <strong>linear hyperplane</strong> 
+                in the transformed feature space. In the original input space, this boundary may appear nonlinear — but in the transformed space, 
+                it is linear. This elegant approach allows SVMs to handle highly complex data while still relying on the concept of linear separation.
+              </p>
+
+              <header>
+                <h2>Dot Product and Kernel Usage in SVMs</h2>
+              </header>
+            
+              <h3>Importance of the Dot Product in Kernels</h3>
+              <p>
+                The <strong>dot product</strong> plays a fundamental role in how Support Vector Machines (SVMs) use kernel functions. 
+                In machine learning, the dot product measures the similarity between two vectors. 
+                For a linear SVM, the decision function relies directly on dot products between input data and the support vectors to classify new points.
+              </p>
+              <p>
+                When the data is not linearly separable, the SVM uses a <strong>kernel trick</strong> to implicitly map the data into a higher-dimensional feature space. 
+                Instead of explicitly computing the coordinates in this higher space, the kernel function calculates the dot product between data points as if they were mapped into that space.
+              </p>
+              <p>
+                Thus, **kernels allow SVMs to operate efficiently** by using the dot product as a shortcut — avoiding the computational cost of high-dimensional transformations. 
+                The dot product is embedded inside every kernel function, whether it is a linear, polynomial, or radial basis function (RBF) kernel. 
+                Without the dot product, kernels would not be able to capture relationships between data points or create complex decision boundaries effectively.
+              </p>
+            
+              <h3>Common Kernels and Their Equations</h3>
+
+              <h4>Linear Kernel</h4>
+              <p style="text-align: center; font-weight: bold;">
+                \( K(x, y) = x \cdot y \)
+              </p>
+              <p style="text-align: center;">
+                where \( x \) and \( y \) are feature vectors, and \( \cdot \) denotes the dot product.
+              </p>
+
+              <h4>Polynomial Kernel</h4>
+              <p style="text-align: center; font-weight: bold;">
+                \( K(x, y) = (r + x \cdot y)^d \)
+              </p>
+              <p style="text-align: center;">
+                where \( r \) is a free parameter (usually 0 or 1), \( d \) is the degree of the polynomial, and \( x \cdot y \) is the dot product between feature vectors.
+              </p>
+
+              <h4>RBF (Radial Basis Function) Kernel</h4>
+              <p style="text-align: center; font-weight: bold;">
+                \( K(x, y) = \exp(-\gamma \|x - y\|^2) \)
+              </p>
+              <p style="text-align: center;">
+                where \( \gamma \) controls the spread of the kernel, and \( \|x - y\|^2 \) is the squared Euclidean distance between feature vectors.
+              </p>
+
+              <p>
+                <img src="images/svm.png" alt="SVM Kernels" style="width: 700px; display: block; margin: auto;">
+              </p>
+              <p style="text-align: center;">
+                <strong>Figure 2:</strong> Different SVM kernels: Linear, Polynomial, and RBF.
+              </p>
+                          
+              <header>
+                <h2>Example: Mapping 2D Points with a Polynomial Kernel</h2>
+              </header>
+            
+              <h3>Polynomial Kernel Transformation with r = 1, d = 2</h3>
+              <p>
+                Let's consider a simple 2D input vector:
+              </p>
+              <p style="text-align: center; font-weight: bold;">
+                \( \mathbf{x} = (x_1, x_2) \)
+              </p>
+              <p>
+                When applying a <strong>polynomial kernel</strong> with a free parameter \( r = 1 \) and degree \( d = 2 \), the mapping is based on the kernel function:
+              </p>
+              <p style="text-align: center; font-weight: bold;">
+                \( K(\mathbf{x}, \mathbf{y}) = (1 + \mathbf{x} \cdot \mathbf{y})^2 \)
+              </p>
+              <p>
+                For a single point, we effectively transform the original 2D feature vector into a new 3-dimensional feature space:
+              </p>
+              <p style="text-align: center; font-weight: bold;">
+                \( \phi(\mathbf{x}) = (x_1^2, \sqrt{2} x_1 x_2, x_2^2) \)
+              </p>
+              <p>
+                Here:
+                <ul>
+                  <li>\( x_1^2 \) represents the square of the first feature</li>
+                  <li>\( \sqrt{2} \, x_1 x_2 \) captures the interaction between the two features</li>
+                  <li>\( x_2^2 \) represents the square of the second feature</li>
+                </ul>
+              </p>
+              <p>
+                By mapping the original data into a higher-dimensional space, the SVM can now find a linear separator in this new space — even though the original data may not have been linearly separable in two dimensions. 
+                This powerful technique enables SVMs to tackle complex classification tasks using relatively simple mathematical tools.
+              </p>
+              <h3>Visualizing 2D to 3D Mapping Using a Polynomial Kernel</h3>
+
+              <p>
+                When using a Polynomial Kernel with parameters \( r = 1 \) and \( d = 2 \), a 2D point \( (x_1, x_2) \) is mapped into a new 3-dimensional feature space as:
+              </p>
+
+              <p style="text-align: center; font-weight: bold;">
+                \( \phi(x) = (x_1^2, \sqrt{2} x_1 x_2, x_2^2) \)
+              </p>
+
+              <p>
+                This transformation enables the SVM to find a linear hyperplane in the new space, even if the original data was not linearly separable in 2D.
+              </p>
+
+              <p>
+                <img src="images/svm-2d-3d.png" alt="2D to 3D Mapping with Polynomial Kernel" style="width: 700px; display: block; margin: auto;">
+              </p>
+
+              <p style="text-align: center;">
+                <strong>Figure 3:</strong> Polynomial Kernel mapping: Nonlinear data in 2D becomes linearly separable in 3D.
+              </p>
+
+
+              <h2>Data Preparation for SVM Modeling</h2>
+              <p>
+                To prepare for Support Vector Machine (SVM) classification, we started with a cleaned asteroid dataset containing orbital, physical, and proximity features.
+                The primary target variable was <code>potentially_hazardous</code>, indicating whether an asteroid poses a potential collision risk.
+              </p>
+
+              <h3>Step 1: Cleaning and Feature Selection</h3>
+              <p>
+                We selected continuous numerical features most predictive of collision risk, focusing on orbital and size characteristics.
+                The selected features included:
+              </p>
+              <ul>
+                <li><code>absolute_magnitude</code></li>
+                <li><code>diameter_km</code></li>
+                <li><code>surface_reflectivity</code></li>
+                <li><code>orbital_eccentricity</code></li>
+                <li><code>semi_major_axis_au</code></li>
+                <li><code>perihelion_distance_au</code></li>
+                <li><code>orbital_inclination_deg</code></li>
+                <li><code>earth_moid_au</code></li>
+                <li><code>mean_motion_deg_day</code></li>
+                <li><code>orbit_fit_rms</code></li>
+              </ul>
+
+              <h3>Step 2: Balancing Using SMOTE</h3>
+              <p>
+                Since hazardous asteroids were the minority class, we used <strong>SMOTE (Synthetic Minority Over-sampling Technique)</strong> to balance the classes, ensuring equal representation of hazardous and non-hazardous examples.
+              </p>
+
+              <h3>Step 3: Train-Test Split</h3>
+              <p>
+                The balanced dataset was split into a <strong>70% training set</strong> and a <strong>30% testing set</strong> using stratified sampling to maintain class distributions.
+                The two sets are completely disjoint, ensuring unbiased evaluation on unseen data.
+              </p>
+
+              <div class="table-container">
+                <h4>Training Set Sample</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>absolute_magnitude</th><th>diameter_km</th><th>surface_reflectivity</th>
+                      <th>orbital_eccentricity</th><th>semi_major_axis_au</th><th>perihelion_distance_au</th>
+                      <th>orbital_inclination_deg</th><th>earth_moid_au</th><th>mean_motion_deg_day</th><th>orbit_fit_rms</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>20.5</td><td>0.35</td><td>0.15</td><td>0.25</td><td>1.5</td><td>0.7</td><td>3.5</td><td>0.04</td><td>0.67</td><td>0.005</td></tr>
+                    <tr><td>21.3</td><td>0.18</td><td>0.12</td><td>0.32</td><td>1.2</td><td>0.6</td><td>5.1</td><td>0.03</td><td>0.81</td><td>0.007</td></tr>
+                    <tr><td>18.8</td><td>0.52</td><td>0.16</td><td>0.18</td><td>2.1</td><td>1.0</td><td>4.2</td><td>0.05</td><td>0.44</td><td>0.004</td></tr>
+                    <tr><td>19.7</td><td>0.29</td><td>0.11</td><td>0.22</td><td>1.8</td><td>0.9</td><td>2.7</td><td>0.02</td><td>0.58</td><td>0.006</td></tr>
+                    <tr><td>22.0</td><td>0.12</td><td>0.10</td><td>0.40</td><td>1.1</td><td>0.5</td><td>6.0</td><td>0.01</td><td>0.92</td><td>0.008</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="table-container">
+                <h4>Testing Set Sample</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>absolute_magnitude</th><th>diameter_km</th><th>surface_reflectivity</th>
+                      <th>orbital_eccentricity</th><th>semi_major_axis_au</th><th>perihelion_distance_au</th>
+                      <th>orbital_inclination_deg</th><th>earth_moid_au</th><th>mean_motion_deg_day</th><th>orbit_fit_rms</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>19.2</td><td>0.45</td><td>0.13</td><td>0.30</td><td>1.7</td><td>0.8</td><td>4.7</td><td>0.03</td><td>0.59</td><td>0.005</td></tr>
+                    <tr><td>20.8</td><td>0.23</td><td>0.12</td><td>0.28</td><td>1.4</td><td>0.6</td><td>3.9</td><td>0.04</td><td>0.72</td><td>0.006</td></tr>
+                    <tr><td>17.5</td><td>0.64</td><td>0.17</td><td>0.15</td><td>2.4</td><td>1.2</td><td>5.0</td><td>0.06</td><td>0.40</td><td>0.003</td></tr>
+                    <tr><td>21.5</td><td>0.20</td><td>0.11</td><td>0.35</td><td>1.3</td><td>0.6</td><td>2.3</td><td>0.02</td><td>0.77</td><td>0.007</td></tr>
+                    <tr><td>18.1</td><td>0.57</td><td>0.14</td><td>0.20</td><td>2.0</td><td>0.9</td><td>3.8</td><td>0.04</td><td>0.52</td><td>0.005</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4>Final Train-Test Class Distribution</h4>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr><th>Set</th><th>Hazardous (1)</th><th>Not Hazardous (0)</th><th>Total Samples</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Training</td><td>669,520</td><td>669,520</td><td>1,339,040</td></tr>
+                    <tr><td>Testing</td><td>286,938</td><td>286,938</td><td>573,876</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>
+                📁 View cleaned dataset: 
+                <a href="https://drive.google.com/file/d/10GvfJGkIdB2H3AprYrGGYZXiBN5psdeG/view?usp=drive_link" target="_blank">cleaned_dataset.csv</a>
+              </p>
+
+              <p>
+                💻 View SVM model code:
+                <a href="https://github.com/Mihirchauhan0709/ml-project/blob/main/Models/svm-modeling.ipynb" target="_blank">svm_modeling.ipynb</a>
+              </p>
+
+              <h2>Code Implementation: SVM Modeling</h2>
+              <p>
+                We used <strong>scikit-learn's</strong> <code>SVC</code> and <code>LinearSVC</code> classes to model asteroid collision risk.
+                Three different types of SVM models were trained and evaluated:
+              </p>
+
+              <ul>
+                <li><strong>Linear SVM:</strong> Using <code>LinearSVC</code> for fast linear separation modeling on large datasets.</li>
+                <li><strong>Polynomial Kernel SVM:</strong> Using <code>degree=2</code> with different <code>C</code> values to model nonlinear boundaries.</li>
+                <li><strong>RBF Kernel SVM:</strong> Using Radial Basis Function kernel to capture highly nonlinear relationships between features.</li>
+              </ul>
+
+              <p>
+                For each kernel type, models were trained at three different <code>C</code> values (0.1, 1, 10), and results were compared using confusion matrices, classification reports, and decision boundary plots.
+              </p>
+
+              <header>
+                <h2>Results and Visualizations: SVM Models</h2>
+              </header>
+            
+              <h3>Confusion Matrix Analysis</h3>
+            
+              <h4>Linear SVM</h4>
+              <p>
+                The Linear SVM achieved a very high overall accuracy of 99%. The confusion matrix shows almost all hazardous asteroids were correctly identified, 
+                with only a small number of safe asteroids mistakenly classified as hazardous. This demonstrates that linear separation, though simple, performed 
+                very well on this dataset after feature selection and balancing.
+              </p>
+              <p>
+                <img src="images/svm-linear.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+            
+              <h4>Polynomial SVM (Degree 2)</h4>
+              
+              <p><strong>C=0.1:</strong> The model was highly flexible, capturing all hazardous asteroids (recall = 1.00) but with many false positives (low precision around 7%).</p>
+              <p>
+                <img src="images/svm-poly.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+              
+              <p><strong>C=1:</strong> The model achieved a balance with improved precision and perfect recall, reducing the number of safe asteroids wrongly classified as hazardous.</p>
+              <p>
+                <img src="images/svm-poly-1.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+              
+              <p><strong>C=10:</strong> The model became stricter, with further reduced false positives, maintaining perfect recall and improving hazardous asteroid precision to around 16%.</p>
+              <p>
+                <img src="images/svm-poly-10.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+            
+              <h4>RBF SVM</h4>
+              
+              <p><strong>C=0.1:</strong> The RBF SVM showed very high recall for hazardous asteroids but very low precision, similar to Polynomial SVM at low C values. 
+              The decision boundary was flexible and soft, resulting in many false alarms.</p>
+              <p>
+                <img src="images/svm-rbf.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+              
+              <p><strong>C=1:</strong> With C=1, the RBF model maintained perfect recall while improving precision, reflecting a more structured boundary and fewer false positives.</p>
+              <p>
+                <img src="images/svm-rbf-1.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+              
+              <p><strong>C=10:</strong> The RBF model became stricter and sharper with C=10, minimizing false positives while maintaining high recall, producing the best trade-off among RBF models.</p>
+              <p>
+                <img src="images/svm-rbf-10.png" alt="" style="width: 500px; display: block; margin: auto;">
+              </p>
+            
+              <h3>Decision Boundary Visualizations</h3>
+            
+              <p>
+                The figures below illustrate how decision boundaries evolved as the regularization parameter \( C \) changed for both Polynomial and RBF SVM models.
+                Lower \( C \) values produced softer, wider boundaries, while higher \( C \) values resulted in tighter, sharper separations.
+              </p>
+            
+              <p style="text-align: center;">
+                <img src="images/polynomial_decision_boundary.png" alt="Polynomial SVM Decision Boundaries" style="width: 800px;">
+                <br><strong>Figure 1:</strong> Polynomial SVM Decision Boundaries at different C values.
+              </p>
+            
+              <p style="text-align: center;">
+                <img src="images/rbf_decision_boundary.png" alt="RBF SVM Decision Boundaries" style="width: 800px;">
+                <br><strong>Figure 2:</strong> RBF SVM Decision Boundaries at different C values.
+              </p>
+            
+              <h3>Model Performance Summary</h3>
+            
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr><th>Model</th><th>C Value</th><th>Accuracy</th><th>Precision (Hazardous)</th><th>Recall (Hazardous)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Linear SVM</td><td>-</td><td>99%</td><td>25%</td><td>100%</td></tr>
+                    <tr><td>Polynomial SVM</td><td>0.1</td><td>97%</td><td>7%</td><td>100%</td></tr>
+                    <tr><td>Polynomial SVM</td><td>1</td><td>98%</td><td>11%</td><td>100%</td></tr>
+                    <tr><td>Polynomial SVM</td><td>10</td><td>99%</td><td>16%</td><td>100%</td></tr>
+                    <tr><td>RBF SVM</td><td>0.1</td><td>97%</td><td>7%</td><td>99%</td></tr>
+                    <tr><td>RBF SVM</td><td>1</td><td>98%</td><td>11%</td><td>100%</td></tr>
+                    <tr><td>RBF SVM</td><td>10</td><td>99%</td><td>16%</td><td>100%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            
+              <p>
+                This table summarizes the comparative performance of different SVM models, highlighting how both Polynomial and RBF kernels performed similarly across different regularization strengths.
+                Higher C values generally produced stricter, better-separated decision boundaries.
+              </p>
+
+
+
+
+
+              <header>
+                <h2>Support Vector Machine (SVM) - Final Conclusion</h2>
+              </header>
+            
+              <p>
+                Through the application of Support Vector Machines (SVMs) to asteroid trajectory data, we were able to explore how machine learning can effectively classify potentially hazardous asteroids. Initially, we trained a Linear SVM using a sampled subset of the data. The Linear SVM achieved a very high overall accuracy, demonstrating that even a simple linear separator can achieve meaningful classification results when features are properly selected and scaled. However, as expected, linear models were slightly limited in flexibility when the data required more complex decision boundaries.
+              </p>
+            
+              <p>
+                To address potential nonlinear separations in the data, we employed a Polynomial Kernel SVM. By experimenting with different values of the regularization parameter \( C \) (0.1, 1, and 10), we observed the impact of model flexibility versus strictness. Lower \( C \) values allowed softer, more flexible boundaries at the cost of higher false positives, while higher \( C \) values enforced tighter margins, improving precision but risking overfitting. The Polynomial Kernel provided smooth nonlinear boundaries that effectively separated hazardous from non-hazardous asteroids based on their orbital eccentricity and semi-major axis.
+              </p>
+            
+              <p>
+                In addition, we implemented a Radial Basis Function (RBF) Kernel SVM, known for its ability to handle highly nonlinear data. Similar to the Polynomial Kernel, we tested RBF SVMs with \( C = 0.1, 1, 10 \). The RBF Kernel produced flexible, rounded decision boundaries that adapted to the data distribution. As \( C \) increased, the RBF model created sharper and stricter margins. Overall, RBF SVMs provided high recall rates, correctly identifying almost all hazardous asteroids, while progressively improving precision as \( C \) increased.
+              </p>
+            
+              <p>
+                The decision boundary visualizations confirmed our observations. At lower \( C \) values, both Polynomial and RBF SVMs exhibited soft, wide decision regions, tolerating more margin violations to capture as many hazardous cases as possible. As \( C \) was increased, the decision boundaries became much sharper and tighter. These results highlight the critical role of hyperparameter tuning, especially \( C \), when applying SVMs in real-world safety-critical applications like asteroid collision prediction.
+              </p>
+            
+              <p>
+                In conclusion, Support Vector Machines proved to be a highly effective method for classifying asteroid collision risk. Linear SVMs performed well on properly selected features, while Polynomial and RBF Kernels enhanced flexibility and separation power for more complex data patterns. Visualizations provided strong intuition about the impact of kernel type and regularization settings. Overall, SVMs offer a robust modeling approach for early identification of potentially hazardous asteroids, supporting proactive planetary defense strategies.
+              </p>
+            
+              <p style="text-align: center;">
+                <img src="images/polynomial_decision_boundary.png" alt="Polynomial Decision Boundary" style="width: 1000px; margin: 20px auto;">
+                <br><strong>Figure 1:</strong> Decision boundaries for Polynomial SVMs with different C values.
+              </p>
+            
+              <p style="text-align: center;">
+                <img src="images/rbf_decision_boundary.png" alt="RBF Decision Boundary" style="width: 1000px; margin: 20px auto;">
+                <br><strong>Figure 2:</strong> Decision boundaries for RBF SVMs with different C values.
+              </p>
+            </section>
+
+            <section id="random-forest" class="model-section">
+              <header>
+                <h2>Ensemble Learning Overview</h2>
+              </header>
+            
+              <p>
+                Ensemble learning is a powerful machine learning technique where multiple models are combined together to solve a problem and improve performance.
+                Instead of relying on a single model, ensemble methods aggregate the predictions of several models to produce a stronger overall prediction.
+                Ensembles help in reducing variance (overfitting), bias (underfitting), and improve predictive performance on unseen data.
+              </p>
+            
+              <p>
+                There are various types of ensemble methods, such as Bagging, Boosting, Stacking, and Voting. Some well-known examples include Random Forest, XGBoost, AdaBoost, and Voting Classifiers.
+              </p>
+            
+              <p style="text-align: center;">
+                <img src="images/bagging.png" alt="Ensemble Learning Diagram" style="width: 700px;">
+              </p>
+              <p style="text-align: center;">
+                <img src="images/boosting.png" alt="Ensemble Learning Diagram" style="width: 700px;">
+                <br><strong>Figure:</strong> Ensemble learning combines multiple models to improve prediction accuracy.
+              </p>
+            
+              <h2>Random Forest Overview</h2>
+            
+              <p>
+                Random Forest is an ensemble learning method that builds a "forest" of multiple Decision Trees during training and outputs the class that is the majority vote of all the trees.
+                It uses a technique called <strong>Bagging (Bootstrap Aggregating)</strong> where each tree is trained on a different random subset of the training data with replacement.
+                Additionally, Random Forest introduces randomness by selecting a random subset of features for each tree split, making the trees diverse and reducing correlation between them.
+              </p>
+            
+              <p>
+                In this project, Random Forest is applied to predict whether an asteroid is potentially hazardous based on its orbital and physical characteristics.
+                By aggregating the decisions of many individual Decision Trees, Random Forest helps achieve high accuracy while reducing overfitting risks compared to a single tree.
+              </p>
+
+              <header>
+                <h2>Data Preparation for Random Forest Modeling</h2>
+              </header>
+            
+              <h3>Overview of Random Forest Method</h3>
+              <p>
+                Random Forest is an ensemble learning method that builds a "forest" of multiple Decision Trees during training and outputs the class that is the majority vote of all the trees.
+                It uses a technique called <strong>Bagging (Bootstrap Aggregating)</strong> where each tree is trained on different random subsets of the training data with replacement.
+                Random Forest also randomly selects features for each tree split, making the trees diverse and reducing correlation between them.
+              </p>
+              <p>
+                I chose Random Forest for this project because it is highly robust to overfitting, handles large datasets well, provides excellent classification accuracy, 
+                and naturally ranks feature importance — all valuable for asteroid hazard prediction where multiple orbital and physical characteristics need to be considered.
+              </p>
+            
+              <h3>Step 1: Feature Selection and Cleaning</h3>
+              <p>
+                We selected relevant continuous features predictive of asteroid collision risk:
+              </p>
+              <ul>
+                <li><code>absolute_magnitude</code></li>
+                <li><code>diameter_km</code></li>
+                <li><code>surface_reflectivity</code></li>
+                <li><code>orbital_eccentricity</code></li>
+                <li><code>semi_major_axis_au</code></li>
+                <li><code>perihelion_distance_au</code></li>
+                <li><code>orbital_inclination_deg</code></li>
+                <li><code>earth_moid_au</code></li>
+                <li><code>mean_motion_deg_day</code></li>
+                <li><code>orbit_fit_rms</code></li>
+              </ul>
+
+              <h3>Step 2: Balancing Using SMOTE</h3>
+              <p>
+                The dataset was highly imbalanced, with many more non-hazardous asteroids. 
+                We used <strong>SMOTE (Synthetic Minority Over-sampling Technique)</strong> to balance the training dataset to a 1:1 class ratio before model training.
+              </p>
+
+              <h4>Data Before and After Transformation</h4>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr><th>Step</th><th>Hazardous (1)</th><th>Not Hazardous (0)</th><th>Total Samples</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Original Dataset</td><td>620</td><td>286,938</td><td>287,558</td></tr>
+                    <tr><td>After SMOTE Balancing</td><td>669,520</td><td>669,520</td><td>1,339,040</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            
+              <h4>Train-Test Split (After SMOTE)</h4>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr><th>Set</th><th>Hazardous (1)</th><th>Not Hazardous (0)</th><th>Total Samples</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Training Set</td><td>669,520</td><td>669,520</td><td>1,339,040</td></tr>
+                    <tr><td>Testing Set</td><td>286,938</td><td>286,938</td><td>573,876</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Step 3: Train-Test Split</h3>
+              <p>
+                The balanced dataset was split into a <strong>70% training set</strong> and a <strong>30% testing set</strong> using stratified sampling to maintain class distributions.
+                The two sets are completely disjoint, ensuring unbiased evaluation on unseen data.
+              </p>
+
+              <div class="table-container">
+                <h4>Training Set Sample</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>absolute_magnitude</th><th>diameter_km</th><th>surface_reflectivity</th>
+                      <th>orbital_eccentricity</th><th>semi_major_axis_au</th><th>perihelion_distance_au</th>
+                      <th>orbital_inclination_deg</th><th>earth_moid_au</th><th>mean_motion_deg_day</th><th>orbit_fit_rms</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>20.5</td><td>0.35</td><td>0.15</td><td>0.25</td><td>1.5</td><td>0.7</td><td>3.5</td><td>0.04</td><td>0.67</td><td>0.005</td></tr>
+                    <tr><td>21.3</td><td>0.18</td><td>0.12</td><td>0.32</td><td>1.2</td><td>0.6</td><td>5.1</td><td>0.03</td><td>0.81</td><td>0.007</td></tr>
+                    <tr><td>18.8</td><td>0.52</td><td>0.16</td><td>0.18</td><td>2.1</td><td>1.0</td><td>4.2</td><td>0.05</td><td>0.44</td><td>0.004</td></tr>
+                    <tr><td>19.7</td><td>0.29</td><td>0.11</td><td>0.22</td><td>1.8</td><td>0.9</td><td>2.7</td><td>0.02</td><td>0.58</td><td>0.006</td></tr>
+                    <tr><td>22.0</td><td>0.12</td><td>0.10</td><td>0.40</td><td>1.1</td><td>0.5</td><td>6.0</td><td>0.01</td><td>0.92</td><td>0.008</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="table-container">
+                <h4>Testing Set Sample</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>absolute_magnitude</th><th>diameter_km</th><th>surface_reflectivity</th>
+                      <th>orbital_eccentricity</th><th>semi_major_axis_au</th><th>perihelion_distance_au</th>
+                      <th>orbital_inclination_deg</th><th>earth_moid_au</th><th>mean_motion_deg_day</th><th>orbit_fit_rms</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>19.2</td><td>0.45</td><td>0.13</td><td>0.30</td><td>1.7</td><td>0.8</td><td>4.7</td><td>0.03</td><td>0.59</td><td>0.005</td></tr>
+                    <tr><td>20.8</td><td>0.23</td><td>0.12</td><td>0.28</td><td>1.4</td><td>0.6</td><td>3.9</td><td>0.04</td><td>0.72</td><td>0.006</td></tr>
+                    <tr><td>17.5</td><td>0.64</td><td>0.17</td><td>0.15</td><td>2.4</td><td>1.2</td><td>5.0</td><td>0.06</td><td>0.40</td><td>0.003</td></tr>
+                    <tr><td>21.5</td><td>0.20</td><td>0.11</td><td>0.35</td><td>1.3</td><td>0.6</td><td>2.3</td><td>0.02</td><td>0.77</td><td>0.007</td></tr>
+                    <tr><td>18.1</td><td>0.57</td><td>0.14</td><td>0.20</td><td>2.0</td><td>0.9</td><td>3.8</td><td>0.04</td><td>0.52</td><td>0.005</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4>Final Train-Test Class Distribution</h4>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr><th>Set</th><th>Hazardous (1)</th><th>Not Hazardous (0)</th><th>Total Samples</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Training</td><td>669,520</td><td>669,520</td><td>1,339,040</td></tr>
+                    <tr><td>Testing</td><td>286,938</td><td>286,938</td><td>573,876</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>
+                📁 View cleaned dataset: 
+                <a href="https://drive.google.com/file/d/10GvfJGkIdB2H3AprYrGGYZXiBN5psdeG/view?usp=drive_link" target="_blank">cleaned_dataset.csv</a>
+              </p>
+
+              <p>
+                💻 View SVM model code:
+                <a href="https://github.com/Mihirchauhan0709/ml-project/blob/main/Models/svm-modeling.ipynb" target="_blank">svm_modeling.ipynb</a>
+              </p>
+            
+            
+              <!-- <h2>Code Implementation: Random Forest Modeling</h2>
+              <p>
+                We trained a Random Forest Classifier using <strong>100 trees</strong> (n_estimators=100) on a sampled training set (20,000 rows) for faster computation.
+                The model was then evaluated on the full testing set.
+                Below are the results:
+              </p>
+            
+              <h3>Confusion Matrix</h3>
+              <p style="text-align: center;">
+                <img src="images/random_forest_confusion_matrix.png" alt="Random Forest Confusion Matrix" style="width: 600px;">
+              </p>
+            
+              <h3>Classification Report Summary</h3>
+              <ul>
+                <li><strong>Accuracy:</strong> 100%</li>
+                <li><strong>Precision (Hazardous Asteroids):</strong> 87%</li>
+                <li><strong>Recall (Hazardous Asteroids):</strong> 100%</li>
+                <li><strong>F1-Score (Hazardous Asteroids):</strong> 93%</li>
+              </ul>
+            
+              <h3>Results for Non-Technical Audience</h3>
+              <p>
+                The Random Forest model successfully detected all hazardous asteroids with no misses. 
+                Out of nearly 287,000 safe asteroids, only 92 were mistakenly flagged as hazardous. 
+                This demonstrates that the model is highly effective at early identification of collision risks while maintaining a very low false alarm rate.
+              </p> -->
+
+              <header>
+                <h2>Results and Visualizations: Random Forest Classifier</h2>
+              </header>
+            
+              <h3>Confusion Matrix Analysis</h3>
+              <p>
+                The Random Forest Classifier achieved outstanding results when predicting asteroid collision risk. 
+                Based on the confusion matrix, it correctly classified all hazardous asteroids, achieving a recall of 1.00 (100%). 
+                Additionally, it correctly identified the vast majority of non-hazardous asteroids, with only 92 false positives out of nearly 287,000 non-hazardous examples.
+              </p>
+            
+              <p style="text-align: center;">
+                <img src="images/random_forest_confusion_matrix.png" alt="Random Forest Confusion Matrix" style="width: 600px;">
+                <br><strong>Figure:</strong> Confusion Matrix of Random Forest Model predicting hazardous asteroids.
+              </p>
+            
+              <h3>Classification Report Summary</h3>
+              <p>
+                The Random Forest model achieved the following key performance metrics:
+              </p>
+            
+              <ul>
+                <li><strong>Accuracy:</strong> 100%</li>
+                <li><strong>Precision (Hazardous Asteroids):</strong> 87%</li>
+                <li><strong>Recall (Hazardous Asteroids):</strong> 100%</li>
+                <li><strong>F1-Score (Hazardous Asteroids):</strong> 93%</li>
+              </ul>
+            
+              <p>
+                These results demonstrate that the model is highly reliable: it detects all potentially hazardous asteroids without missing any.
+                Although there are a small number of false alarms (safe asteroids predicted as hazardous), the trade-off is acceptable for a planetary defense scenario where missing a hazardous object would have severe consequences.
+              </p>
+            
+              <h3>Results Explained for Non-Technical Audience</h3>
+              <p>
+                Imagine a system that needs to spot dangerous asteroids early. Using Random Forest, the system successfully identified every asteroid that could be risky, with no misses. 
+                Out of almost 287,000 safe asteroids, it mistakenly flagged just 92 as risky — which is a very small error rate.
+                In other words, the model works extremely well: it catches all dangerous cases and makes very few mistakes when identifying safe ones.
+              </p>
             </section>
     
         </div>
