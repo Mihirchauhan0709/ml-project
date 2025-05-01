@@ -92,7 +92,7 @@
               <li><a href="#regression">Regression</a></li>
             </ul> -->
           </li>
-          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="conclusion.html">Conclusion</a></li>
           <li><a href="https://mihirchauhan0709.github.io/chauhan-mihir/" target=”_blank” >About Me</a></li>
         </ul>
 		<ul class="icons">
@@ -113,7 +113,7 @@
                 <li><a href="#" class="model-link" data-target="decision-tree">Decision Tree</a></li>
                 <li><a href="#" class="model-link" data-target="regression">Regression</a></li>
                 <li><a href="#" class="model-link" data-target="svm">SVM</a></li>
-                <li><a href="#" class="model-link" data-target="random-forest">Randon Forest</a></li>
+                <li><a href="#" class="model-link" data-target="random-forest">Random Forest</a></li>
                 
                 
             </ul>
@@ -2276,13 +2276,20 @@
               <h3>Confusion Matrix Analysis</h3>
             
               <h4>Linear SVM</h4>
+
+              <p><strong>C=0.1:</strong> Flexible margin with many false positives (1,899), but perfect recall for hazardous asteroids.</p>
               <p>
-                The Linear SVM achieved a very high overall accuracy of 99%. The confusion matrix shows almost all hazardous asteroids were correctly identified, 
-                with only a small number of safe asteroids mistakenly classified as hazardous. This demonstrates that linear separation, though simple, performed 
-                very well on this dataset after feature selection and balancing.
+                <img src="images/svm-linear-01.png" alt="Linear SVM C=0.1" style="width: 500px; display: block; margin: auto;">
               </p>
+
+              <p><strong>C=1:</strong> Balanced trade-off, with a higher number of false positives (4,013) but still maintaining perfect recall.</p>
               <p>
-                <img src="images/svm-linear.png" alt="" style="width: 500px; display: block; margin: auto;">
+                <img src="images/svm-linear-1.png" alt="Linear SVM C=1" style="width: 500px; display: block; margin: auto;">
+              </p>
+
+              <p><strong>C=10:</strong> Tighter margin, fewer false positives (1,491), and perfect recall — the best trade-off among Linear SVMs.</p>
+              <p>
+                <img src="images/svm-linear-10.png" alt="Linear SVM C=10" style="width: 500px; display: block; margin: auto;">
               </p>
             
               <h4>Polynomial SVM (Degree 2)</h4>
@@ -2326,6 +2333,11 @@
                 The figures below illustrate how decision boundaries evolved as the regularization parameter \( C \) changed for both Polynomial and RBF SVM models.
                 Lower \( C \) values produced softer, wider boundaries, while higher \( C \) values resulted in tighter, sharper separations.
               </p>
+
+              <p style="text-align: center;">
+                <img src="images/linear_decision_boundary.png" alt="Linear SVM Decision Boundaries" style="width: 800px;">
+                <br><strong>Figure 3:</strong> Linear SVM Decision Boundaries at different C values.
+              </p>              
             
               <p style="text-align: center;">
                 <img src="images/polynomial_decision_boundary.png" alt="Polynomial SVM Decision Boundaries" style="width: 800px;">
@@ -2342,19 +2354,30 @@
               <div class="table-container">
                 <table>
                   <thead>
-                    <tr><th>Model</th><th>C Value</th><th>Accuracy</th><th>Precision (Hazardous)</th><th>Recall (Hazardous)</th></tr>
+                    <tr>
+                      <th>Model</th>
+                      <th>C Value</th>
+                      <th>Accuracy</th>
+                      <th>Precision (Hazardous)</th>
+                      <th>Recall (Hazardous)</th>
+                    </tr>
                   </thead>
                   <tbody>
-                    <tr><td>Linear SVM</td><td>-</td><td>99%</td><td>25%</td><td>100%</td></tr>
+                    <tr><td>Linear SVM</td><td>0.1</td><td>99%</td><td>25%</td><td>100%</td></tr>
+                    <tr><td>Linear SVM</td><td>1</td><td>98%</td><td>11%</td><td>100%</td></tr>
+                    <tr><td>Linear SVM</td><td>10</td><td>99%</td><td>16%</td><td>100%</td></tr>
+              
                     <tr><td>Polynomial SVM</td><td>0.1</td><td>97%</td><td>7%</td><td>100%</td></tr>
                     <tr><td>Polynomial SVM</td><td>1</td><td>98%</td><td>11%</td><td>100%</td></tr>
                     <tr><td>Polynomial SVM</td><td>10</td><td>99%</td><td>16%</td><td>100%</td></tr>
+              
                     <tr><td>RBF SVM</td><td>0.1</td><td>97%</td><td>7%</td><td>99%</td></tr>
                     <tr><td>RBF SVM</td><td>1</td><td>98%</td><td>11%</td><td>100%</td></tr>
                     <tr><td>RBF SVM</td><td>10</td><td>99%</td><td>16%</td><td>100%</td></tr>
                   </tbody>
                 </table>
               </div>
+              
             
               <p>
                 This table summarizes the comparative performance of different SVM models, highlighting how both Polynomial and RBF kernels performed similarly across different regularization strengths.
@@ -2389,7 +2412,7 @@
                 In conclusion, Support Vector Machines proved to be a highly effective method for classifying asteroid collision risk. Linear SVMs performed well on properly selected features, while Polynomial and RBF Kernels enhanced flexibility and separation power for more complex data patterns. Visualizations provided strong intuition about the impact of kernel type and regularization settings. Overall, SVMs offer a robust modeling approach for early identification of potentially hazardous asteroids, supporting proactive planetary defense strategies.
               </p>
             
-              <p style="text-align: center;">
+              <!-- <p style="text-align: center;">
                 <img src="images/polynomial_decision_boundary.png" alt="Polynomial Decision Boundary" style="width: 1000px; margin: 20px auto;">
                 <br><strong>Figure 1:</strong> Decision boundaries for Polynomial SVMs with different C values.
               </p>
@@ -2397,7 +2420,7 @@
               <p style="text-align: center;">
                 <img src="images/rbf_decision_boundary.png" alt="RBF Decision Boundary" style="width: 1000px; margin: 20px auto;">
                 <br><strong>Figure 2:</strong> Decision boundaries for RBF SVMs with different C values.
-              </p>
+              </p> -->
             </section>
 
             <section id="random-forest" class="model-section">

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Conclusion</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+    (function () {
+        // Initialize EmailJS with your public key
+        emailjs.init({
+            publicKey: "GhFtq6Okk97dn7Uf5",
+        });
+    })();
+
+    function SendMail() {
+        var params = {
+            from_name: document.getElementById("name").value,
+            from_email: document.getElementById("email").value,
+            message: document.getElementById("message").value
+        };
+
+        emailjs.send("service_692e32d", "template_n3h2m8o", params)
+        .then(function (res) {
+            alert("Message sent successfully! Status: " + res.status);
+            document.getElementById("contact-form").reset(); // Clear the form after successful submission
+        })
+        .catch(function (err) {
+            alert("Failed to send message. Please try again.");
+            console.error("EmailJS Error: ", err);
+        });
+    }
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll('a.scrolly').forEach(anchor => {
+				anchor.addEventListener("click", function (e) {
+					e.preventDefault();
+					const targetId = this.getAttribute("href").substring(1);
+					const targetElement = document.getElementById(targetId);
+	
+					if (targetElement) {
+						window.scrollTo({
+							top: targetElement.offsetTop - 10, // Adjust if needed
+							behavior: "smooth"
+						});
+					}
+				});
+			});
+		});
+	</script>
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper" class="fade-in">
+      <!-- Header -->
+      <header id="header">
+        <a href="#final-conclusion" class="logo scrolly">Conclusion</a>
+    </header>
+    
+
+      <!-- Nav -->
+      <nav id="nav">
+        <ul class="links">
+          <li><a href="index.html">Home</a></li>
+          <!-- <li><a href="#introduction">Introduction</a></li> -->
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="dataprep_eda.html">Data Preparation & EDA</a></li>
+          <li class="dropdown">
+            <a href="model_implementation.html" class="dropbtn">Model Implementation</a>
+            <ul class="dropdown-content">
+              <li><a href="#pca">PCA</a></li>
+              <li><a href="#clustering">Clustering</a></li>
+              <li><a href="#arm">Association Rule Mining</a></li>
+              <li><a href="#dt">Decision Trees</a></li>
+              <li><a href="#nb">Naïve Bayes</a></li>
+              <li><a href="#svm">Support Vector Machines</a></li>
+              <li><a href="#regression">Regression</a></li>
+            </ul>
+          </li>
+          <li class="active"><a href="conclusion.html">Conclusion</a></li>
+          <li><a href="https://mihirchauhan0709.github.io/chauhan-mihir/" target=”_blank” >About Me</a></li>
+        </ul>
+		<ul class="icons">
+			<!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
+			<li><a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+			<!-- <li><a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
+			<li><a href="https://github.com/Mihirchauhan0709" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+		</ul>
+      </nav>
+
+      <!-- Main -->
+       <div id="main">
+        <article class="post">
+            <header class="major">
+                <h2 class="title">Conclusion</h2>
+                <p class="meta">By Mihir Chauhan</p>
+            </header>
+            <div class="content">
+                <p>
+                    This project set out to explore how machine learning can aid in predicting potentially hazardous asteroid collisions with Earth. 
+                    By analyzing a rich dataset of Near-Earth Objects (NEOs) collected from NASA and other astronomical sources, we were able to engineer a pipeline that used 
+                    both unsupervised and supervised learning models to understand asteroid behavior and estimate collision risk. 
+                    Through thoughtful preprocessing, feature selection, and class balancing using SMOTE, we prepared a robust foundation for reliable prediction. 
+                    Our ultimate objective was not just accuracy, but interpretability and real-world relevance for planetary defense initiatives.
+                  </p>
+                
+                  <p>
+                    In the unsupervised learning stage, we applied Principal Component Analysis (PCA) to reduce dimensionality and improve feature interpretability. 
+                    Clustering algorithms like K-Means and DBSCAN revealed meaningful groups among asteroids, many with patterns based on size, eccentricity, and proximity to Earth. 
+                    Association Rule Mining (ARM) allowed us to uncover if–then patterns between orbital features and hazard status. 
+                    These early explorations helped us better understand how asteroids group together and what features might be early indicators of risk, especially for objects not previously flagged as dangerous.
+                  </p>
+                
+                  <p>
+                    We then transitioned into supervised learning with Naïve Bayes, Decision Trees, and Support Vector Machines (SVMs). 
+                    Naïve Bayes models offered fast and interpretable results, especially when tuned across Multinomial, Bernoulli, and Gaussian variants. 
+                    Decision Trees provided a transparent way to visualize decision logic based on orbital elements like MOID and inclination. 
+                    SVMs were explored extensively using Linear, Polynomial, and RBF kernels, with three different regularization values (C=0.1, 1, 10) for each. 
+                    We analyzed how these kernels handled margin flexibility and false positives, and used decision boundary plots to visualize their performance. 
+                    Across models, recall was consistently strong—especially crucial when identifying rare hazardous events.
+                  </p>
+                
+                  <p>
+                    To close the modeling phase, we implemented an ensemble learning method using Random Forests. 
+                    This bagging-based approach aggregated multiple Decision Trees and achieved near-perfect classification on the test set. 
+                    All hazardous asteroids were detected (recall = 1.00), with only a handful of false positives. 
+                    This demonstrated the model’s strength in learning complex non-linear relationships without overfitting. 
+                    Feature importance rankings showed that Earth Minimum Orbit Intersection Distance (MOID), semi-major axis, and diameter were the top contributors to hazard classification—offering actionable insights for astronomers and mission planners.
+                  </p>
+                
+                  <p>
+                    In conclusion, this project highlights how modern machine learning models can support critical planetary defense operations. 
+                    By combining PCA, clustering, ARM, classification models, and ensemble techniques, we built a pipeline capable of learning from vast and complex astronomical datasets. 
+                    The results were not only statistically accurate but also interpretable, visualized, and aligned with real-world asteroid risk scenarios. 
+                    This work reflects the growing potential of AI in space science, offering scalable, accurate, and explainable solutions for detecting cosmic threats. 
+                    With further data, global collaboration, and interdisciplinary innovation, we believe this pipeline can be a strong starting point for future asteroid monitoring and impact mitigation efforts.
+                  </p>
+                
+                  <p style="text-align: center;">
+                    <img src="images/svm-summary-all.png" alt="SVM Kernel Comparison" style="width: 1000px;">
+                    <br><strong>Figure 1:</strong> Decision boundaries for SVMs with Linear, Polynomial, and RBF kernels.
+                  </p>
+                
+                  <p style="text-align: center;">
+                    <img src="images/random_forest_confusion_matrix.png" alt="Random Forest Confusion Matrix" style="width: 700px;">
+                    <br><strong>Figure 2:</strong> Random Forest model confusion matrix showing excellent precision and recall.
+                  </p>
+            </div>
+        </article>
+       </div>
+
+      
+      
+
+
+
+     <!-- Footer -->
+     <footer id="footer">
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p>If you have any questions or inquiries, feel free to send me a message.</p>
+    
+            <form id="contact-form" onsubmit="SendMail(); return false;">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Your Message" rows="3" required></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><button type="submit" class="button">Send Message</button></li>
+                </ul>
+            </form>
+        </section>
+    
+    <section class="split contact">
+      <section class="alt">
+        <h3>Address</h3>
+        <p>
+          1475 Folsom St.<br />
+          Boulder, CO 80302
+        </p>
+      </section>
+      <section>
+        <h3>Phone</h3>
+        <p><a href="#">(720) 813-5491)</a></p>
+      </section>
+      <section>
+        <h3>Email</h3>
+        <p><a href="#">mihirchauhan951@gmail.com</a></p>
+      </section>
+      <section>
+        <h3>Social</h3>
+        <ul class="icons alt">
+          <li>
+            <a href="https://x.com/mihir_0702" class="icon brands alt fa-twitter"
+              ><span class="label">Twitter</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.facebook.com/mihir.chauhan.503" class="icon brands alt fa-facebook-f"
+              ><span class="label">Facebook</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.instagram.com/_mihir__chauhan_/#" class="icon brands alt fa-instagram"
+              ><span class="label">Instagram</span></a
+            >
+          </li>
+          <li>
+            <a href="https://github.com/Mihirchauhan0709" class="icon brands alt fa-github"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/mihirchauhan10/" class="icon brands alt fa-linkedin"
+              ><span class="label">LinkedIn</span></a
+            >
+          </li>
+        </ul>
+      </section>
+    </section>
+  </footer>
+
+  <!-- Copyright -->
+  <div id="copyright">
+    <ul>
+      <li>&copy; Mihir Chauhan</li>
+      <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+    </ul>
+  </div>
+</div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
